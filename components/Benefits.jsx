@@ -1,4 +1,4 @@
-/* global React, Icon, Reveal */
+/* global React, Icon, Reveal, GlowCard */
 
 const benefitsStyles = {
   section: { background: 'var(--surface)' },
@@ -56,17 +56,13 @@ function Benefits() {
         <div style={benefitsStyles.grid}>
           {BENEFITS.map((b, i) => (
             <Reveal key={i} delay={i * 50}>
-              <div
-                style={benefitsStyles.card}
-                onMouseEnter={(e)=>{e.currentTarget.style.transform='translateY(-3px)'; e.currentTarget.style.boxShadow='var(--shadow-md)';}}
-                onMouseLeave={(e)=>{e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='';}}
-              >
+              <GlowCard style={{ padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <span style={benefitsStyles.iconWrap}>
                   <Icon name={b.icon} size={22} />
                 </span>
                 <div style={benefitsStyles.title}>{b.title}</div>
                 <div style={benefitsStyles.text}>{b.text}</div>
-              </div>
+              </GlowCard>
             </Reveal>
           ))}
         </div>

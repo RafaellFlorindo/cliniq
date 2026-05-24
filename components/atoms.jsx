@@ -1,7 +1,15 @@
 /* global React, lucide */
-// Shared atoms — Button, Badge, Icon helper, Container, Eyebrow
+// Shared atoms — Button, Badge, Icon helper, Container, Eyebrow, GlowCard
 
 const { useEffect, useRef } = React;
+
+// Global cursor tracker — feeds --cursor-x / --cursor-y to all .glow-card::before
+(function () {
+  document.addEventListener('pointermove', function (e) {
+    document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
+    document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
+  });
+})();
 
 /** Renders a Lucide icon. Re-creates on mount/update. */
 function Icon({ name, size = 18, strokeWidth = 1.75, color, style }) {
@@ -82,4 +90,27 @@ function Reveal({ children, delay = 0, as: Tag = 'div', style, ...rest }) {
   return <Tag ref={ref} style={mergedStyle} {...rest}>{children}</Tag>;
 }
 
-Object.assign(window, { Icon, Button, Badge, Container, Eyebrow, Reveal });
+/** Full per-element spotlight glow card — tracks mouse per-element for precise border glow. */
+function SpotlightCard({ children, className, style, ...rest }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    function onMove(e) {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--x', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--y', (e.clientY - r.top) + 'px');
+    }
+    el.addEventListener('pointermove', onMove);
+    return () => el.removeEventListener('pointermove', onMove);
+  }, []);
+  return (
+    <div ref={ref} data-glow="" className={className || ''} style={style} {...rest}>
+      {children}
+    </div>
+  );
+}
+
+const GlowCard = SpotlightCard;
+
+Object.assign(window, { Icon, Button, Badge, Container, Eyebrow, Reveal, GlowCard, SpotlightCard });

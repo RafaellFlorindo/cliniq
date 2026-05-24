@@ -20,10 +20,11 @@ const navStyles = {
     gap: 10,
     color: 'var(--ink-900)',
     fontFamily: 'var(--font-display)',
-    fontSize: 22,
-    fontWeight: 700,
-    letterSpacing: '-0.025em',
+    fontSize: 21,
+    fontWeight: 800,
+    letterSpacing: '0.04em',
     textDecoration: 'none',
+    textTransform: 'uppercase',
   },
   brandMark: {
     width: 32, height: 32, borderRadius: 10,
@@ -34,13 +35,14 @@ const navStyles = {
   },
   links: {
     display: 'flex', alignItems: 'center', gap: 32,
-    fontSize: 14, fontWeight: 500,
+    fontSize: 14, fontWeight: 400, letterSpacing: '0.01em',
   },
   link: {
-    color: 'var(--ink-700)',
+    color: 'var(--ink-600)',
     textDecoration: 'none',
     transition: 'color 140ms var(--ease-out)',
     cursor: 'pointer',
+    fontStyle: 'italic',
   },
   right: {
     display: 'flex', alignItems: 'center', gap: 12,

@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CLINIQ — Agenda cheia, no-show zerado e 5★ no Google, no piloto automático</title>
 
+  <!-- ===== GOOGLE FONTS — Playfair Display (display) + Lora (body) ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
   <!-- ===== DESIGN TOKENS + BASE + UTILITÁRIOS ===== -->
   <link rel="stylesheet" href="styles/tokens.css">
   <link rel="stylesheet" href="styles/landing.css">
@@ -17,6 +22,8 @@
   <script src="vendor/react-dom.development.js"></script>
   <script src="vendor/babel.min.js"></script>
   <script src="vendor/lucide.min.js"></script>
+  <!-- Three.js — loaded as global window.THREE for DottedSurface hero background -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
 
   <!-- ===== COMPONENTES (ordem importa — cada arquivo lê window.* dos anteriores) ===== -->
 

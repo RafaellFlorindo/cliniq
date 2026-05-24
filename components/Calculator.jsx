@@ -27,7 +27,7 @@ const calcStyles = {
   panel: {
     background: 'rgba(255,255,255,0.04)',
     border: '1px solid rgba(255,255,255,0.10)',
-    borderRadius: 24,
+    borderRadius: 8,
     padding: 28,
     backdropFilter: 'blur(8px)',
   },
@@ -112,8 +112,10 @@ function Calculator({ onCtaClick }) {
         <div style={calcStyles.grid} className="calc-grid">
           <Reveal style={calcStyles.header}>
             <span className="eyebrow eyebrow-onnavy">Calculadora honesta</span>
-            <h2 className="display display-xl" style={{ marginTop: 12, color: '#fff' }}>
-              Quanto o no-show <span className="accent-underline">tira da sua conta</span> todo mês?
+            <h2 className="display display-xl" style={{ marginTop: 12, color: '#fff', lineHeight: 1.05 }}>
+              Quanto o no-show{' '}
+              <span style={{ color: 'var(--teal-500)' }}>tira da sua conta</span>
+              {' '}todo mês?
             </h2>
             <p style={{ marginTop: 18, fontSize: 17, color: 'rgba(255,255,255,0.7)', lineHeight: 1.55 }}>
               Mexa nos números do seu mês. A conta é simples: cliente que não aparece é horário pago, profissional ocioso e prejuízo direto.

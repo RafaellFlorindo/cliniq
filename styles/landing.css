@@ -36,7 +36,7 @@
     font-family: inherit; font-weight: 600;
     font-size: 15px; letter-spacing: -0.005em;
     cursor: pointer;
-    border-radius: 999px;
+    border-radius: 5px;
     padding: 16px 26px;
     border: 1px solid transparent;
     transition: background 140ms var(--ease-out), color 140ms var(--ease-out),
@@ -108,16 +108,24 @@
   /* Focus */
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  /* Display headlines (Bricolage) */
+  /* Display headlines (Playfair Display) */
   .display {
     font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 0.92;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 0.94;
     text-wrap: balance;
     text-transform: uppercase;
     color: var(--ink-900);
     margin: 0;
+  }
+  .display-italic-line {
+    display: block;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    line-height: 1.0;
   }
   .display-xxl { font-size: clamp(48px, 8.5vw, 124px); }
   .display-xl  { font-size: clamp(40px, 6vw, 80px); }
@@ -133,10 +141,17 @@
     white-space: nowrap;
   }
   .accent-underline {
-    background-image: linear-gradient(transparent 70%, var(--accent-soft) 70%);
+    background-image: linear-gradient(transparent 68%, var(--accent-soft) 68%);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     padding: 0 0.08em;
+    /* keeps each wrapped line independent so the highlight doesn't bleed */
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  /* On dark/navy sections, use a subtle teal tint instead of the light soft colour */
+  .on-navy .accent-underline {
+    background-image: linear-gradient(transparent 68%, rgba(77,182,172,0.30) 68%);
   }
 
   /* Navy section helper */
@@ -150,7 +165,7 @@
   .card {
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: var(--radius-xl);
+    border-radius: 6px;
     box-shadow: var(--shadow-sm);
     padding: var(--space-8);
   }
@@ -173,3 +188,143 @@
   /* Hide scrollbar on storyboard track */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* ==========================================================================
+     DOTTED SURFACE HERO — Three.js canvas container
+     ========================================================================== */
+  .dotted-hero-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .dotted-hero-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  /* Gradient veil: top fades the canvas para limpar a área de texto */
+  .dotted-hero-canvas::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% 18%, rgba(250,251,252,0.98) 0%, rgba(250,251,252,0.88) 35%, rgba(250,251,252,0.45) 62%, transparent 85%),
+      linear-gradient(to bottom, rgba(250,251,252,0.96) 0%, transparent 45%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ==========================================================================
+     ANIMATED SVG UNDERLINE
+     ========================================================================== */
+  @keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* ==========================================================================
+     TESTIMONIALS INFINITE SCROLL
+     ========================================================================== */
+  @keyframes scrollUp {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-50%); }
+  }
+
+  .testimonials-track {
+    will-change: transform;
+  }
+  .testimonials-track:hover {
+    animation-play-state: paused;
+  }
+
+  @media (max-width: 640px)  { .tsm-hide { display: none !important; } }
+  @media (max-width: 900px)  { .tmd-hide { display: none !important; } }
+
+  /* ==========================================================================
+     FLOATING ANIMATION (hero chips)
+     ========================================================================== */
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0px);   }
+    50%       { transform: translateY(-10px); }
+  }
+
+  /* ==========================================================================
+     SPOTLIGHT CARD — per-element cursor border glow via [data-glow]
+     ========================================================================== */
+  [data-glow] {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    transition:
+      transform    220ms var(--ease-out),
+      box-shadow   220ms var(--ease-out);
+  }
+
+  [data-glow]::before,
+  [data-glow]::after {
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Ambient fill glow */
+  [data-glow]::before {
+    inset: 0;
+    background: radial-gradient(
+      220px circle at var(--x, -500px) var(--y, -500px),
+      rgba(77,182,172,0.10),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 350ms;
+    z-index: 0;
+  }
+
+  /* Border ring glow — mask punches out the interior, leaving only the border */
+  [data-glow]::after {
+    inset: -1px;
+    padding: 1px;
+    background: radial-gradient(
+      100px circle at var(--x, -500px) var(--y, -500px),
+      rgba(77,182,172,0.88),
+      transparent
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 280ms;
+    z-index: 0;
+  }
+
+  [data-glow]:hover::before { opacity: 1; }
+  [data-glow]:hover::after  { opacity: 1; }
+  [data-glow]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(15,46,74,0.10);
+  }
+
+  /* Children sit above glow layers */
+  [data-glow] > * { position: relative; z-index: 1; }
+
+  /* Button glow rings */
+  .btn-primary:hover {
+    box-shadow:
+      0 0 0 3px rgba(77,182,172,0.22),
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 -1px 0 rgba(0,0,0,0.18) inset,
+      0 14px 32px rgba(15,46,74,0.26);
+  }
+  .btn-teal:hover {
+    box-shadow:
+      0 0 0 4px rgba(77,182,172,0.28),
+      0 14px 32px rgba(77,182,172,0.38);
+  }

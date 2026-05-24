@@ -1,0 +1,474 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+
+  .section { margin-bottom: 2.5rem; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 1rem;
+  }
+
+  /* LOGO */
+  .logo-showcase {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  .logo-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-mark {
+    width: 52px;
+    height: 52px;
+    background: #0F2E4A;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .logo-mark svg { width: 28px; height: 28px; }
+  .logo-text-group { display: flex; flex-direction: column; gap: 1px; }
+  .logo-wordmark {
+    font-size: 26px;
+    font-weight: 500;
+    color: #0F2E4A;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .logo-wordmark span { color: #4DB6AC; }
+  .logo-tagline {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.04em;
+  }
+
+  .logo-variants {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo-dark {
+    background: #0F2E4A;
+    border-radius: var(--border-radius-md);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dark .logo-mark-sm {
+    width: 32px;
+    height: 32px;
+    background: #4DB6AC;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-dark .logo-mark-sm svg { width: 18px; height: 18px; }
+  .logo-dark .wordmark-sm {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .logo-dark .wordmark-sm span { color: #4DB6AC; }
+
+  .logo-light {
+    background: #F5F7FA;
+    border-radius: var(--border-radius-md);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-light .logo-mark-sm {
+    width: 32px;
+    height: 32px;
+    background: #0F2E4A;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-light .logo-mark-sm svg { width: 18px; height: 18px; }
+  .logo-light .wordmark-sm {
+    font-size: 18px;
+    font-weight: 500;
+    color: #0F2E4A;
+    letter-spacing: -0.02em;
+  }
+  .logo-light .wordmark-sm span { color: #4DB6AC; }
+
+  /* COLORS */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  .color-chip {
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+  .chip-swatch { height: 64px; }
+  .chip-info { padding: 8px 10px; background: var(--color-background-primary); }
+  .chip-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .chip-hex { font-size: 11px; color: var(--color-text-tertiary); font-family: var(--font-mono); }
+  .chip-role { font-size: 10px; color: var(--color-text-tertiary); margin-top: 2px; display: block; }
+
+  /* TYPOGRAPHY */
+  .type-showcase {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .type-row { display: flex; align-items: baseline; gap: 1rem; }
+  .type-meta { font-size: 11px; color: var(--color-text-tertiary); width: 100px; flex-shrink: 0; font-family: var(--font-mono); }
+  .t-display { font-size: 32px; font-weight: 500; color: #0F2E4A; letter-spacing: -0.03em; line-height: 1; }
+  .t-h1 { font-size: 22px; font-weight: 500; color: #0F2E4A; }
+  .t-h2 { font-size: 17px; font-weight: 500; color: #0F2E4A; }
+  .t-body { font-size: 15px; color: var(--color-text-primary); line-height: 1.6; }
+  .t-caption { font-size: 12px; color: var(--color-text-secondary); }
+  .t-badge {
+    font-size: 11px;
+    font-weight: 500;
+    background: #E0F4F2;
+    color: #0F6E5A;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* CARD COMPONENTS */
+  .components-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .comp-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+  }
+  .comp-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+  }
+
+  /* plan card */
+  .plan-pill {
+    font-size: 10px;
+    font-weight: 500;
+    background: #4DB6AC;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .plan-name { font-size: 15px; font-weight: 500; color: #0F2E4A; margin-bottom: 2px; }
+  .plan-price { font-size: 24px; font-weight: 500; color: #0F2E4A; }
+  .plan-price span { font-size: 13px; font-weight: 400; color: var(--color-text-secondary); }
+  .plan-feature { font-size: 12px; color: var(--color-text-secondary); padding: 3px 0; display: flex; gap: 6px; align-items: center; }
+  .plan-feature::before { content: "✓"; color: #4DB6AC; font-weight: 500; font-size: 13px; }
+  .plan-btn {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 9px;
+    background: #0F2E4A;
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* stat card */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-item {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+  }
+  .stat-val { font-size: 20px; font-weight: 500; color: #0F2E4A; }
+  .stat-lbl { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+
+  /* badge examples */
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .badge-primary { background: #0F2E4A; color: #fff; }
+  .badge-teal { background: #E0F4F2; color: #0F6E5A; }
+  .badge-outline { background: transparent; color: #0F2E4A; border: 0.5px solid #0F2E4A; }
+  .badge-soft { background: #E8EDF2; color: #0F2E4A; }
+
+  /* personality */
+  .personality-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .pers-card {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    background: var(--color-background-primary);
+  }
+  .pers-icon { font-size: 22px; margin-bottom: 8px; }
+  .pers-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .pers-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+
+  @media (max-width: 500px) {
+    .palette-grid { grid-template-columns: repeat(3, 1fr); }
+    .components-grid { grid-template-columns: 1fr; }
+    .personality-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<h2 class="sr-only">Proposta de branding completa para o produto CLINIQ</h2>
+
+<div style="padding: 1rem 0;">
+
+  <!-- LOGO -->
+  <div class="section">
+    <p class="section-label">Logotipo</p>
+    <div class="logo-showcase">
+      <div class="logo-main">
+        <div class="logo-mark">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="12" y="3" width="4" height="22" rx="2" fill="#4DB6AC"/>
+            <rect x="3" y="12" width="22" height="4" rx="2" fill="white" opacity="0.9"/>
+            <circle cx="14" cy="14" r="3" fill="white"/>
+          </svg>
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-wordmark">CLINI<span>Q</span></span>
+          <span class="logo-tagline">sua clínica no piloto automático</span>
+        </div>
+      </div>
+
+      <div class="logo-variants">
+        <div class="logo-dark">
+          <div class="logo-mark-sm">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="12" y="3" width="4" height="22" rx="2" fill="white"/>
+              <rect x="3" y="12" width="22" height="4" rx="2" fill="#0F2E4A" opacity="0.6"/>
+              <circle cx="14" cy="14" r="3" fill="#0F2E4A"/>
+            </svg>
+          </div>
+          <span class="wordmark-sm">CLINI<span>Q</span></span>
+        </div>
+
+        <div class="logo-light">
+          <div class="logo-mark-sm">
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="12" y="3" width="4" height="22" rx="2" fill="#4DB6AC"/>
+              <rect x="3" y="12" width="22" height="4" rx="2" fill="white" opacity="0.9"/>
+              <circle cx="14" cy="14" r="3" fill="white"/>
+            </svg>
+          </div>
+          <span class="wordmark-sm">CLINI<span>Q</span></span>
+        </div>
+
+        <div style="width: 44px; height: 44px; background: #0F2E4A; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
+            <rect x="12" y="3" width="4" height="22" rx="2" fill="#4DB6AC"/>
+            <rect x="3" y="12" width="22" height="4" rx="2" fill="white" opacity="0.9"/>
+            <circle cx="14" cy="14" r="3" fill="white"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PALETA -->
+  <div class="section">
+    <p class="section-label">Paleta de cores</p>
+    <div class="palette-grid">
+      <div class="color-chip">
+        <div class="chip-swatch" style="background: #0F2E4A;"></div>
+        <div class="chip-info">
+          <span class="chip-name">Navy Deep</span>
+          <span class="chip-hex">#0F2E4A</span>
+          <span class="chip-role">Primária · autoridade</span>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="chip-swatch" style="background: #4DB6AC;"></div>
+        <div class="chip-info">
+          <span class="chip-name">Teal Med</span>
+          <span class="chip-hex">#4DB6AC</span>
+          <span class="chip-role">Accent · saúde</span>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="chip-swatch" style="background: #E0F4F2;"></div>
+        <div class="chip-info">
+          <span class="chip-name">Teal Soft</span>
+          <span class="chip-hex">#E0F4F2</span>
+          <span class="chip-role">Fundo badges</span>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="chip-swatch" style="background: #F5F7FA;"></div>
+        <div class="chip-info">
+          <span class="chip-name">Off White</span>
+          <span class="chip-hex">#F5F7FA</span>
+          <span class="chip-role">Superfícies</span>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="chip-swatch" style="background: #1A4A6E;"></div>
+        <div class="chip-info">
+          <span class="chip-name">Navy Mid</span>
+          <span class="chip-hex">#1A4A6E</span>
+          <span class="chip-role">Hover · variação</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPOGRAFIA -->
+  <div class="section">
+    <p class="section-label">Tipografia</p>
+    <div class="type-showcase">
+      <div class="type-row">
+        <span class="type-meta">Display / 32</span>
+        <span class="t-display">CLINIQ</span>
+      </div>
+      <div class="type-row">
+        <span class="type-meta">H1 / 22</span>
+        <span class="t-h1">Sua clínica no piloto automático</span>
+      </div>
+      <div class="type-row">
+        <span class="type-meta">H2 / 17</span>
+        <span class="t-h2">Sistema de captação e conversão</span>
+      </div>
+      <div class="type-row">
+        <span class="type-meta">Body / 15</span>
+        <span class="t-body">Transforma visitantes em agendamentos, reagenda quem some e constrói reputação no Google.</span>
+      </div>
+      <div class="type-row">
+        <span class="type-meta">Caption / 12</span>
+        <span class="t-caption">Desenvolvido para clínicas de estética · GHL + IA nativa · 2025</span>
+      </div>
+      <div class="type-row">
+        <span class="type-meta">Badge</span>
+        <span class="t-badge">IA nativa</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENTES -->
+  <div class="section">
+    <p class="section-label">Componentes de exemplo</p>
+    <div class="components-grid">
+
+      <div class="comp-card">
+        <p class="comp-label">Plano pricing card</p>
+        <span class="plan-pill">✦ Mais vendido</span>
+        <p class="plan-name">Crescimento</p>
+        <p class="plan-price">R$1.497<span>/mês</span></p>
+        <div style="margin-top: 10px;">
+          <div class="plan-feature">IA listener de reagendamento</div>
+          <div class="plan-feature">Filtro avaliação Google</div>
+          <div class="plan-feature">Evento Meta CAPI</div>
+        </div>
+        <button class="plan-btn">Contratar agora</button>
+      </div>
+
+      <div class="comp-card">
+        <p class="comp-label">Dashboard KPIs</p>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-val">R$14.970</div>
+            <div class="stat-lbl">MRR estabilizado</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val">R$25k</div>
+            <div class="stat-lbl">Setup acumulado</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val">10</div>
+            <div class="stat-lbl">Clientes ativos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val">12 meses</div>
+            <div class="stat-lbl">R$179k recorrência</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BADGES -->
+  <div class="section">
+    <p class="section-label">Sistema de badges</p>
+    <div class="badge-row">
+      <span class="badge badge-primary">IA nativa</span>
+      <span class="badge badge-teal">Diferencial</span>
+      <span class="badge badge-teal">GHL nativo</span>
+      <span class="badge badge-outline">Novo</span>
+      <span class="badge badge-soft">Essencial</span>
+      <span class="badge badge-soft">Crescimento</span>
+    </div>
+  </div>
+
+  <!-- PERSONALIDADE -->
+  <div class="section">
+    <p class="section-label">Personalidade de marca</p>
+    <div class="personality-grid">
+      <div class="pers-card">
+        <div class="pers-icon">🧠</div>
+        <div class="pers-title">Inteligente</div>
+        <div class="pers-desc">Fala com autoridade técnica, mas sem jargão desnecessário. Resolve o problema antes de explicar.</div>
+      </div>
+      <div class="pers-card">
+        <div class="pers-icon">⚙️</div>
+        <div class="pers-title">Confiável</div>
+        <div class="pers-desc">Tom direto, sem promessas vazias. Mostra números e processos reais — deixa o sistema falar por si.</div>
+      </div>
+      <div class="pers-card">
+        <div class="pers-icon">🎯</div>
+        <div class="pers-title">Focado</div>
+        <div class="pers-desc">Não é para todos — é especificamente para clínicas de estética. O nicho é o posicionamento.</div>
+      </div>
+    </div>
+  </div>
+
+</div>

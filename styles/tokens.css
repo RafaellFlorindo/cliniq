@@ -388,8 +388,8 @@
      TYPOGRAPHY — Base
      ---------------------------------------------------------------------- */
 
-  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'Bricolage Grotesque', 'Manrope', system-ui, sans-serif;
+  --font-sans: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* Weights — per brief: 500 for headings, 400 for body */
@@ -501,12 +501,13 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-h1 { font-size: var(--text-5xl); letter-spacing: -0.025em; }
-h2 { font-size: var(--text-3xl); letter-spacing: -0.02em; }
-h3 { font-size: var(--text-2xl); letter-spacing: -0.015em; line-height: var(--lh-snug); }
-h4 { font-size: var(--text-xl);  line-height: var(--lh-snug); }
-h5 { font-size: var(--text-lg);  line-height: var(--lh-snug); }
-h6 { font-size: var(--text-base); line-height: var(--lh-snug); }
+/* Playfair Display para títulos de maior impacto */
+h1 { font-family: var(--font-display); font-size: var(--text-5xl); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.015em; }
+h3 { font-size: var(--text-2xl); letter-spacing: -0.01em; line-height: var(--lh-snug); font-weight: 600; }
+h4 { font-size: var(--text-xl);  line-height: var(--lh-snug); font-weight: 600; }
+h5 { font-size: var(--text-lg);  line-height: var(--lh-snug); font-weight: 500; }
+h6 { font-size: var(--text-base); line-height: var(--lh-snug); font-weight: 500; }
 
 p {
   margin: 0;

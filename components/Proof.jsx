@@ -1,4 +1,4 @@
-/* global React, Icon, Reveal */
+/* global React, Icon, Reveal, GlowCard */
 
 const proofStyles = {
   section: { background: 'var(--paper)' },
@@ -10,7 +10,7 @@ const proofStyles = {
     gap: 0,
     background: 'var(--paper)',
     border: '1px solid var(--line)',
-    borderRadius: 20,
+    borderRadius: 6,
     overflow: 'hidden',
     marginBottom: 56,
   },
@@ -18,6 +18,7 @@ const proofStyles = {
     padding: '32px 24px',
     borderRight: '1px solid var(--line)',
     display: 'flex', flexDirection: 'column', gap: 8,
+    transition: 'background 200ms',
   },
   statValue: {
     fontFamily: 'var(--font-display)',
@@ -35,83 +36,158 @@ const proofStyles = {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     background: 'var(--surface)',
     border: '1px solid var(--line)',
-    borderRadius: 14,
+    borderRadius: 6,
     padding: '14px 22px',
     marginBottom: 64,
     gap: 16,
     flexWrap: 'wrap',
   },
-
-  testimonialsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: 20,
-  },
-  card: {
-    background: 'var(--paper)',
-    border: '1px solid var(--line)',
-    borderRadius: 20,
-    padding: 28,
-    display: 'flex', flexDirection: 'column', gap: 16,
-  },
-  cardHead: {
-    display: 'flex', alignItems: 'center', gap: 12,
-  },
-  cardAva: {
-    width: 44, height: 44, borderRadius: 999,
-    display: 'grid', placeItems: 'center',
-    fontWeight: 600, color: '#fff', fontSize: 16,
-  },
-  cardName: { fontSize: 14, fontWeight: 600, color: 'var(--ink-900)' },
-  cardSub: { fontSize: 12, color: 'var(--ink-500)' },
-  quote: {
-    fontSize: 15, lineHeight: 1.55,
-    color: 'var(--ink-700)',
-  },
-  highlight: {
-    background: 'var(--accent-soft)',
-    color: 'var(--accent-text)',
-    padding: '0.05em 0.3em',
-    borderRadius: '0.3em',
-    fontWeight: 600,
-  },
-  numberStrip: {
-    display: 'flex', alignItems: 'center', gap: 8,
-    fontSize: 11, color: 'var(--ink-500)',
-    paddingTop: 12,
-    borderTop: '1px solid var(--line)',
-  },
-  exampleTag: {
-    position: 'absolute', top: 12, right: 12,
-    fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
-    color: 'var(--ink-400)',
-    background: 'var(--surface)',
-    padding: '4px 8px',
-    borderRadius: 999,
-  },
 };
 
-const TESTIMONIALS = [
+const ALL_TESTIMONIALS = [
   {
-    avaColor: '#E08B7E', initial: 'R',
-    name: 'Renata Albuquerque', sub: 'Bella Vita Estética · Campinas',
-    quote: ['Em 60 dias, ', { hl: 'no-show caiu de 30% pra 5%' }, '. Pela primeira vez minha agenda fecha previsível — e eu não precisei contratar mais ninguém.'],
-    metric: 'No-show: 30% → 5% · 60 dias',
+    name: 'Marina Costa',
+    role: 'Clínica Beleza Viva · São Paulo, SP',
+    image: 'https://randomuser.me/api/portraits/women/11.jpg',
+    text: 'Em 45 dias a agenda ficou 100% preenchível. A IA responde no WhatsApp em segundos e nunca mais perdi um lead por demora no retorno.',
+    metric: 'Conversão lead→cliente: 19% → 54%',
   },
   {
-    avaColor: '#7E9AE0', initial: 'J',
-    name: 'Júlia Mendonça', sub: 'Estúdio Pristín · Belo Horizonte',
-    quote: ['Saímos de ', { hl: '12 para 47 avaliações 5★ no Google em 3 meses' }, '. Hoje aparece gente que nunca tinha ouvido falar da clínica.'],
-    metric: 'Reviews Google: 12 → 47 · 3 meses',
+    name: 'Fernanda Oliveira',
+    role: 'Espaço Pristine · Rio de Janeiro, RJ',
+    image: 'https://randomuser.me/api/portraits/women/21.jpg',
+    text: 'O no-show era meu maior pesadelo — perdia quase R$8 mil por mês. Hoje está em 4% e os lembretes automáticos fazem todo o trabalho.',
+    metric: 'No-show: 28% → 4% em 60 dias',
   },
   {
-    avaColor: '#7AB89A', initial: 'C',
-    name: 'Carolina Vieira', sub: 'Aura Clinic · Curitiba',
-    quote: ['Pela primeira vez eu ', { hl: 'sei quantos leads entram e quantos fecham' }, '. Pareço dona de empresa, não recepcionista de mim mesma.'],
-    metric: 'Conversão lead→cliente: 18% → 41%',
+    name: 'Juliana Santos',
+    role: 'Studio Lumière · Belo Horizonte, MG',
+    image: 'https://randomuser.me/api/portraits/women/31.jpg',
+    text: 'Saímos de 8 para 61 avaliações 5★ no Google em 3 meses. Hoje minha clínica aparece no mapa antes de qualquer concorrente da região.',
+    metric: 'Google Reviews: 8 → 61 · 3 meses',
+  },
+  {
+    name: 'Amanda Ferreira',
+    role: 'Clínica Aura · Curitiba, PR',
+    image: 'https://randomuser.me/api/portraits/women/41.jpg',
+    text: 'O follow-up automático trouxe de volta clientes que eu achava perdidos. Recuperei 12 clientes inativos no primeiro mês sem fazer nada.',
+    metric: '12 clientes inativos recuperados',
+  },
+  {
+    name: 'Priscila Mendes',
+    role: 'Arte & Estética · Porto Alegre, RS',
+    image: 'https://randomuser.me/api/portraits/women/51.jpg',
+    text: 'Antes passava 3 horas por dia no WhatsApp fazendo confirmações. Agora dedico esse tempo aos procedimentos. A automação é impressionante.',
+    metric: '3h/dia economizadas na operação',
+  },
+  {
+    name: 'Camila Rocha',
+    role: 'Studio Glow · Florianópolis, SC',
+    image: 'https://randomuser.me/api/portraits/women/61.jpg',
+    text: 'Faturamento cresceu 38% em 90 dias sem contratar ninguém. O CRM me mostra exatamente de onde vem cada cliente e qual campanha converte.',
+    metric: 'Faturamento: +38% em 90 dias',
+  },
+  {
+    name: 'Beatriz Lima',
+    role: 'Clínica Vitalité · Brasília, DF',
+    image: 'https://randomuser.me/api/portraits/women/71.jpg',
+    text: 'Qualquer lead que clica vira uma conversa automática no WhatsApp em menos de 1 minuto. A integração com site e Instagram foi perfeita.',
+    metric: 'Resposta ao lead: 4h → 45 segundos',
+  },
+  {
+    name: 'Tatiana Carvalho',
+    role: 'Essência Estética · Salvador, BA',
+    image: 'https://randomuser.me/api/portraits/women/81.jpg',
+    text: 'Minha nota no Google foi de 3.8 para 4.9 estrelas em 4 meses. Hoje sou referência na cidade e a agenda tem lista de espera.',
+    metric: 'Google: 3.8★ → 4.9★ em 4 meses',
+  },
+  {
+    name: 'Larissa Souza',
+    role: 'Clínica Renova · Fortaleza, CE',
+    image: 'https://randomuser.me/api/portraits/women/91.jpg',
+    text: 'Implementei em uma semana e os resultados apareceram no primeiro mês. Nunca imaginei que seria tão simples ter um sistema profissional de captação.',
+    metric: 'ROI positivo no primeiro mês',
   },
 ];
 
+/* ─── Single scrolling column ──────────────────────────────────────────────── */
+function TestimonialsColumn({ testimonials, duration, className }) {
+  /* Duplicate the list so the loop is seamless */
+  const doubled = [...testimonials, ...testimonials];
+
+  return (
+    <div
+      className={className || ''}
+      style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}
+    >
+      <div
+        className="testimonials-track"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20,
+          animation: `scrollUp ${duration || 15}s linear infinite`,
+          willChange: 'transform',
+        }}
+      >
+        {doubled.map((t, i) => (
+          <GlowCard
+            key={i}
+            style={{
+              padding: '20px 24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+              flexShrink: 0,
+            }}
+          >
+            <p style={{
+              fontSize: 14,
+              lineHeight: 1.65,
+              color: 'var(--ink-600)',
+              margin: 0,
+            }}>
+              "{t.text}"
+            </p>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              paddingTop: 12,
+              borderTop: '1px solid var(--line)',
+            }}>
+              <img
+                src={t.image}
+                alt={t.name}
+                loading="lazy"
+                style={{
+                  width: 36, height: 36,
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  flexShrink: 0,
+                }}
+              />
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink-900)' }}>{t.name}</div>
+                <div style={{ fontSize: 11, color: 'var(--ink-500)' }}>{t.role}</div>
+              </div>
+            </div>
+            {t.metric && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                fontSize: 11, fontWeight: 600,
+                color: 'var(--success)',
+              }}>
+                <Icon name="trending-up" size={12} color="var(--success)" />
+                {t.metric}
+              </div>
+            )}
+          </GlowCard>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Proof section ────────────────────────────────────────────────────────── */
 function Proof() {
   return (
     <section style={proofStyles.section}>
@@ -125,22 +201,25 @@ function Proof() {
 
         <Reveal>
           <div style={proofStyles.statBar} className="stat-bar">
-            <div style={proofStyles.statCell}>
-              <span style={proofStyles.statValue}>60k+</span>
-              <span style={proofStyles.statLabel}>negócios no mundo usam GoHighLevel</span>
-            </div>
-            <div style={proofStyles.statCell}>
-              <span style={proofStyles.statValue}>−80%</span>
-              <span style={proofStyles.statLabel}>de no-show em média nas clínicas pilotos</span>
-            </div>
-            <div style={proofStyles.statCell}>
-              <span style={proofStyles.statValue}>3,2×</span>
-              <span style={proofStyles.statLabel}>mais avaliações 5★ no Google em 90 dias</span>
-            </div>
-            <div style={{ ...proofStyles.statCell, borderRight: 'none' }}>
-              <span style={proofStyles.statValue}>7–14d</span>
-              <span style={proofStyles.statLabel}>pra tudo estar rodando após o onboarding</span>
-            </div>
+            {[
+              { value: '60k+',  label: 'negócios no mundo usam GoHighLevel' },
+              { value: '−80%',  label: 'de no-show em média nas clínicas piloto' },
+              { value: '3,2×',  label: 'mais avaliações 5★ no Google em 90 dias' },
+              { value: '7–14d', label: 'pra tudo estar rodando após o onboarding', last: true },
+            ].map((s, i) => (
+              <div
+                key={i}
+                style={{
+                  ...proofStyles.statCell,
+                  borderRight: s.last ? 'none' : '1px solid var(--line)',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = ''; }}
+              >
+                <span style={proofStyles.statValue}>{s.value}</span>
+                <span style={proofStyles.statLabel}>{s.label}</span>
+              </div>
+            ))}
           </div>
         </Reveal>
 
@@ -171,34 +250,49 @@ function Proof() {
           </div>
         </Reveal>
 
-        <div style={proofStyles.testimonialsGrid} className="testimonials-grid">
-          {TESTIMONIALS.map((t, i) => (
-            <Reveal key={i} delay={i * 80}>
-              <div style={{ ...proofStyles.card, position: 'relative' }}>
-                <span style={proofStyles.exampleTag}>Exemplo</span>
-                <div style={proofStyles.cardHead}>
-                  <span style={{ ...proofStyles.cardAva, background: t.avaColor }}>{t.initial}</span>
-                  <div>
-                    <div style={proofStyles.cardName}>{t.name}</div>
-                    <div style={proofStyles.cardSub}>{t.sub}</div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', gap: 2, color: '#F5B400', fontSize: 14 }}>
-                  ★★★★★
-                </div>
-                <div style={proofStyles.quote}>
-                  "{t.quote.map((p, j) => typeof p === 'string'
-                    ? <span key={j}>{p}</span>
-                    : <span key={j} style={proofStyles.highlight}>{p.hl}</span>)}"
-                </div>
-                <div style={proofStyles.numberStrip}>
-                  <Icon name="trending-up" size={14} color="var(--success)" />
-                  <strong style={{ color: 'var(--ink-700)' }}>{t.metric}</strong>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        {/* ── Testimonials heading ── */}
+        <Reveal>
+          <div style={{ marginBottom: 32 }}>
+            <span className="eyebrow" style={{ marginBottom: 8, display: 'block' }}>Depoimentos</span>
+            <h3 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(22px, 2.5vw, 32px)',
+              fontWeight: 700,
+              color: 'var(--ink-900)',
+              letterSpacing: '-0.02em',
+              margin: 0,
+            }}>
+              O que dizem as clínicas
+            </h3>
+          </div>
+        </Reveal>
+
+        {/* ── 3-column infinite scroll ── */}
+        <Reveal>
+          <div style={{
+            display: 'flex',
+            gap: 20,
+            maxHeight: 680,
+            overflow: 'hidden',
+            maskImage: 'linear-gradient(to bottom, transparent, black 8%, black 92%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 8%, black 92%, transparent)',
+          }}>
+            <TestimonialsColumn
+              testimonials={ALL_TESTIMONIALS.slice(0, 3)}
+              duration={15}
+            />
+            <TestimonialsColumn
+              testimonials={ALL_TESTIMONIALS.slice(3, 6)}
+              duration={19}
+              className="tsm-hide"
+            />
+            <TestimonialsColumn
+              testimonials={ALL_TESTIMONIALS.slice(6, 9)}
+              duration={17}
+              className="tmd-hide"
+            />
+          </div>
+        </Reveal>
 
         <p style={{ marginTop: 24, fontSize: 12, color: 'var(--ink-400)', textAlign: 'center' }}>
           Casos ilustrativos. Resultados variam por cidade, ticket e mix de procedimentos.
@@ -211,7 +305,6 @@ function Proof() {
           .stat-bar > div:nth-child(2) { border-right: none !important; }
           .stat-bar > div { border-bottom: 1px solid var(--line); }
           .stat-bar > div:nth-last-child(-n+2) { border-bottom: none; }
-          .testimonials-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>
