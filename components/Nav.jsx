@@ -1,6 +1,56 @@
 /* global React, Container, Button, Icon */
 const { useState, useEffect } = React;
 
+/* ─── Cliniq logo mark with interactive + ───────────────────────────────── */
+function LogoMark() {
+  const [hov, setHov] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  function handleClick() {
+    setClicked(true);
+    setTimeout(() => setClicked(false), 600);
+  }
+
+  return (
+    <div
+      onClick={handleClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        width: 34, height: 34, borderRadius: 9,
+        background: 'var(--navy-900)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        cursor: 'pointer', position: 'relative', overflow: 'hidden', flexShrink: 0,
+        transition: 'transform 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms',
+        transform: hov ? 'scale(1.10)' : 'scale(1)',
+        boxShadow: hov ? '0 4px 14px rgba(15,46,74,0.35)' : 'none',
+      }}
+    >
+      <svg
+        viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"
+        width="18" height="18"
+        style={{
+          transition: 'transform 300ms cubic-bezier(0.22,1,0.36,1)',
+          transform: clicked ? 'rotate(45deg) scale(1.15)' : hov ? 'rotate(14deg)' : 'rotate(0deg)',
+        }}
+      >
+        <rect x="12" y="3" width="4" height="22" rx="2" fill="#4DB6AC"/>
+        <rect x="3" y="12" width="22" height="4" rx="2" fill="white" opacity="0.9"/>
+        <circle cx="14" cy="14" r="3" fill="white"/>
+      </svg>
+      {clicked && (
+        <span style={{
+          position: 'absolute', inset: 0,
+          background: 'rgba(77,182,172,0.35)',
+          borderRadius: 'inherit',
+          animation: 'logoRipple 500ms ease-out forwards',
+          pointerEvents: 'none',
+        }} />
+      )}
+    </div>
+  );
+}
+
 const navStyles = {
   wrap: {
     position: 'fixed',
@@ -76,8 +126,8 @@ function Nav({ onCtaClick }) {
     <header style={wrapStyle}>
       <div className="container-wide" style={navStyles.inner}>
         <a href="#" style={navStyles.brand} onClick={(e)=>{e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});}}>
-          <span style={navStyles.brandMark}>C</span>
-          <span>CLINIQ</span>
+          <LogoMark />
+          <span>CLINI<span style={{ color: 'var(--teal-500)' }}>Q</span></span>
         </a>
         <nav style={navStyles.links} className="nav-links">
           <a href="#problema" style={navStyles.link} onClick={scrollTo('problema')}>Problema</a>
@@ -95,6 +145,10 @@ function Nav({ onCtaClick }) {
       <style>{`
         @media (max-width: 820px) {
           .nav-links { display: none !important; }
+        }
+        @keyframes logoRipple {
+          from { opacity: 1; transform: scale(0.4); }
+          to   { opacity: 0; transform: scale(2.2); }
         }
       `}</style>
     </header>

@@ -1,106 +1,41 @@
 /* global React, Icon, Reveal, GlowCard */
 
-/* ─── Three.js animated dot-wave background ──────────────────────────────── */
-function DottedSurface() {
-  const ref = React.useRef(null);
+/* ─── Dot-pattern + mouse-highlight background ───────────────────────────── */
+function HeroHighlight({ children, style }) {
+  const [pos, setPos] = React.useState({ x: -500, y: -500 });
+  const [hov, setHov] = React.useState(false);
 
-  React.useEffect(() => {
-    const container = ref.current;
-    if (!container || !window.THREE) return;
-    const THREE = window.THREE;
-
-    const SEPARATION = 150;
-    const AMOUNTX = 40;
-    const AMOUNTY = 60;
-
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0xffffff, 2000, 10000);
-
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      1,
-      10000,
-    );
-    camera.position.set(0, 355, 1220);
-
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(scene.fog.color, 0);
-    container.appendChild(renderer.domElement);
-
-    const positions = [];
-    const colors = [];
-    for (let ix = 0; ix < AMOUNTX; ix++) {
-      for (let iy = 0; iy < AMOUNTY; iy++) {
-        const x = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
-        const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
-        positions.push(x, 0, z);
-        // Navy-800 normalizado (#0F2E4A → 0.059, 0.180, 0.290)
-        colors.push(0.059, 0.180, 0.290);
-      }
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 5,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.28,
-      sizeAttenuation: true,
-    });
-
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
-
-    let count = 0;
-    let animId;
-
-    function animate() {
-      animId = requestAnimationFrame(animate);
-      const posAttr = geometry.attributes.position;
-      const arr = posAttr.array;
-      let i = 0;
-      for (let ix = 0; ix < AMOUNTX; ix++) {
-        for (let iy = 0; iy < AMOUNTY; iy++) {
-          const index = i * 3;
-          arr[index + 1] =
-            Math.sin((ix + count) * 0.3) * 50 +
-            Math.sin((iy + count) * 0.5) * 50;
-          i++;
-        }
-      }
-      posAttr.needsUpdate = true;
-      renderer.render(scene, camera);
-      count += 0.1;
-    }
-
-    function onResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    window.addEventListener('resize', onResize);
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', onResize);
-      cancelAnimationFrame(animId);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-    };
-  }, []);
-
-  return <div ref={ref} className="dotted-hero-canvas" />;
+  return (
+    <div
+      style={{ position: 'relative', overflow: 'hidden', background: '#fff', ...style }}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        setPos({ x: e.clientX - r.left, y: e.clientY - r.top });
+      }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => { setHov(false); setPos({ x: -500, y: -500 }); }}
+    >
+      {/* Static neutral dot grid */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: 'radial-gradient(circle, rgba(15,46,74,0.13) 1.5px, transparent 1.5px)',
+        backgroundSize: '20px 20px',
+      }} />
+      {/* Teal dot highlight masked to cursor radius */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: 'radial-gradient(circle, var(--teal-500) 1.5px, transparent 1.5px)',
+        backgroundSize: '20px 20px',
+        WebkitMaskImage: `radial-gradient(200px circle at ${pos.x}px ${pos.y}px, black 0%, transparent 100%)`,
+        maskImage: `radial-gradient(200px circle at ${pos.x}px ${pos.y}px, black 0%, transparent 100%)`,
+        opacity: hov ? 1 : 0,
+        transition: 'opacity 300ms',
+      }} />
+      <div style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', alignItems: 'center' }}>
+        {children}
+      </div>
+    </div>
+  );
 }
 
 /* ─── Fake macOS window wrapper ──────────────────────────────────────────── */
@@ -108,14 +43,14 @@ function MacWindow({ title, children }) {
   const [hovered, setHovered] = React.useState(false);
 
   const dots = [
-    { color: '#FF5F57', hoverColor: '#e0443e', symbol: '×' },
-    { color: '#FFBD2E', hoverColor: '#dea123', symbol: '–' },
-    { color: '#28C840', hoverColor: '#1faa34', symbol: '+' },
+    { color: '#FF5F57', symbol: '×' },
+    { color: '#FFBD2E', symbol: '–' },
+    { color: '#28C840', symbol: '+' },
   ];
 
   return (
     <div style={{
-      background: 'rgba(255,255,255,0.88)',
+      background: 'rgba(255,255,255,0.92)',
       backdropFilter: 'blur(24px)',
       WebkitBackdropFilter: 'blur(24px)',
       borderRadius: 14,
@@ -135,7 +70,6 @@ function MacWindow({ title, children }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* ── Title bar ── */}
       <div style={{
         background: 'linear-gradient(180deg, #f5f5f5 0%, #ebebeb 100%)',
         borderBottom: '1px solid rgba(0,0,0,0.12)',
@@ -145,59 +79,31 @@ function MacWindow({ title, children }) {
         userSelect: 'none',
         gap: 12,
       }}>
-        {/* Traffic lights */}
-        <div
-          style={{ display: 'flex', gap: 7 }}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
+        <div style={{ display: 'flex', gap: 7 }}>
           {dots.map((d, i) => (
-            <div
-              key={i}
-              style={{
-                width: 13, height: 13,
-                borderRadius: '50%',
-                background: d.color,
-                boxShadow: `inset 0 0 0 0.5px rgba(0,0,0,0.18)`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 9,
-                fontWeight: 900,
-                color: 'rgba(0,0,0,0.50)',
-                transition: 'transform 150ms, filter 150ms',
-                transform: hovered ? 'scale(1.05)' : 'scale(1)',
-                filter: hovered ? 'brightness(0.88)' : 'brightness(1)',
-                cursor: 'default',
-                lineHeight: 1,
-                fontFamily: 'system-ui',
-              }}
-            >
+            <div key={i} style={{
+              width: 13, height: 13, borderRadius: '50%',
+              background: d.color,
+              boxShadow: 'inset 0 0 0 0.5px rgba(0,0,0,0.18)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 9, fontWeight: 900, color: 'rgba(0,0,0,0.50)',
+              transition: 'transform 150ms, filter 150ms',
+              transform: hovered ? 'scale(1.05)' : 'scale(1)',
+              filter: hovered ? 'brightness(0.88)' : 'brightness(1)',
+              cursor: 'default', lineHeight: 1, fontFamily: 'system-ui',
+            }}>
               {hovered ? d.symbol : ''}
             </div>
           ))}
         </div>
-
-        {/* Window title */}
         <div style={{ flex: 1, textAlign: 'center' }}>
-          <span style={{
-            fontSize: 11.5,
-            fontWeight: 600,
-            color: '#5a5a5a',
-            letterSpacing: '-0.01em',
-          }}>
+          <span style={{ fontSize: 11.5, fontWeight: 600, color: '#5a5a5a', letterSpacing: '-0.01em' }}>
             {title}
           </span>
         </div>
-
-        {/* Spacer to balance title */}
         <div style={{ width: 47 }} />
       </div>
-
-      {/* ── Content ── */}
-      <div style={{ padding: 18 }}>
-        {children}
-      </div>
+      <div style={{ padding: 18 }}>{children}</div>
     </div>
   );
 }
@@ -210,13 +116,9 @@ function AnimatedUnderlineText({ children }) {
       <svg
         aria-hidden="true"
         style={{
-          position: 'absolute',
-          left: 0,
-          bottom: '-0.04em',
-          width: '100%',
-          height: '0.14em',
-          overflow: 'visible',
-          pointerEvents: 'none',
+          position: 'absolute', left: 0, bottom: '-0.04em',
+          width: '100%', height: '0.14em',
+          overflow: 'visible', pointerEvents: 'none',
         }}
         viewBox="0 0 300 16"
         preserveAspectRatio="none"
@@ -240,38 +142,7 @@ function AnimatedUnderlineText({ children }) {
 
 /* ─── Styles ─────────────────────────────────────────────────────────────── */
 const heroStyles = {
-  section: {
-    background: '#fafbfc',
-    position: 'relative',
-    paddingTop: 100,
-    paddingBottom: 0,
-    overflow: 'hidden',
-  },
-  innerWrap: { position: 'relative', zIndex: 1 },
   textCol: { textAlign: 'center', maxWidth: 880, margin: '0 auto' },
-  announce: {
-    display: 'inline-flex', alignItems: 'center',
-    background: 'rgba(255,255,255,0.80)',
-    border: '1px solid var(--line)',
-    borderRadius: 999,
-    padding: 4,
-    fontSize: 12.5,
-    boxShadow: '0 1px 2px rgba(15,46,74,0.04)',
-    gap: 10, marginBottom: 28,
-    backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)',
-  },
-  announceTag: {
-    background: 'var(--accent-soft)', color: 'var(--accent-text)',
-    fontWeight: 700, padding: '5px 12px', borderRadius: 999,
-    letterSpacing: '0.06em', textTransform: 'uppercase',
-    fontSize: 10.5, whiteSpace: 'nowrap',
-    display: 'inline-flex', alignItems: 'center', gap: 5,
-  },
-  announceText: {
-    color: 'var(--ink-700)', paddingRight: 12,
-    letterSpacing: '-0.005em', fontWeight: 500, whiteSpace: 'nowrap',
-  },
   lede: {
     fontSize: 'clamp(15px, 1.15vw, 17.5px)',
     lineHeight: 1.72,
@@ -297,19 +168,13 @@ const heroStyles = {
     display: 'grid', placeItems: 'center',
     fontWeight: 600, fontSize: 9.5, color: '#fff',
   },
-  visual: { position: 'relative', marginTop: 44, paddingBottom: 0 },
+  visual: { position: 'relative', marginTop: 0, paddingBottom: 0 },
 
-  /* Stat grid inside Mac window */
-  statGrid: {
-    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: 10, marginBottom: 14,
-  },
+  statGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 14 },
   stat: {
-    background: 'var(--surface)', borderRadius: 12,
-    padding: '12px 14px',
+    background: 'var(--surface)', borderRadius: 12, padding: '12px 14px',
     display: 'flex', flexDirection: 'column', gap: 3,
-    transition: 'background 180ms, box-shadow 180ms, transform 180ms',
-    cursor: 'default',
+    transition: 'background 180ms, box-shadow 180ms, transform 180ms', cursor: 'default',
   },
   statLabel: { fontSize: 10, color: 'var(--ink-500)', fontWeight: 500 },
   statValue: { fontSize: 20, fontWeight: 700, color: 'var(--ink-900)', letterSpacing: '-0.02em', fontFeatureSettings: '"tnum"' },
@@ -320,11 +185,7 @@ const heroStyles = {
   feedHeader: { fontSize: 10, fontWeight: 700, color: 'var(--ink-500)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 10 },
   feedItem: { display: 'flex', alignItems: 'center', gap: 9, padding: '7px 0', borderTop: '1px dashed var(--line)', fontSize: 12 },
   feedItemFirst: { borderTop: 'none' },
-  feedAva: {
-    width: 26, height: 26, borderRadius: 999,
-    display: 'grid', placeItems: 'center',
-    fontSize: 10, fontWeight: 600, color: '#fff', flexShrink: 0,
-  },
+  feedAva: { width: 26, height: 26, borderRadius: 999, display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 600, color: '#fff', flexShrink: 0 },
   feedText: { flex: 1, minWidth: 0 },
   feedName: { color: 'var(--ink-900)', fontWeight: 600, fontSize: 12 },
   feedSub: { color: 'var(--ink-500)', fontSize: 10 },
@@ -335,8 +196,7 @@ const heroStyles = {
     background: 'var(--success)',
     boxShadow: '0 0 0 3px rgba(47,163,122,0.20)',
     animation: 'pulse 2s ease-in-out infinite',
-    display: 'inline-block',
-    flexShrink: 0,
+    display: 'inline-block', flexShrink: 0,
   },
 
   floatBase: {
@@ -351,7 +211,7 @@ const heroStyles = {
   },
 };
 
-/* ─── Stat card with hover glow ──────────────────────────────────────────── */
+/* ─── Stat card ──────────────────────────────────────────────────────────── */
 function StatCard({ label, value, delta, color }) {
   const [hov, setHov] = React.useState(false);
   return (
@@ -366,15 +226,13 @@ function StatCard({ label, value, delta, color }) {
       onMouseLeave={() => setHov(false)}
     >
       <span style={heroStyles.statLabel}>{label}</span>
-      <span style={{ ...heroStyles.statValue, color: color || 'var(--ink-900)' }} className="tnum">
-        {value}
-      </span>
+      <span style={{ ...heroStyles.statValue, color: color || 'var(--ink-900)' }} className="tnum">{value}</span>
       <span style={heroStyles.statDelta}>{delta}</span>
     </div>
   );
 }
 
-/* ─── Feed item with staggered fade-in ───────────────────────────────────── */
+/* ─── Feed item ──────────────────────────────────────────────────────────── */
 function FeedItem({ n, t, time, c, delay, isFirst }) {
   const [vis, setVis] = React.useState(false);
   React.useEffect(() => {
@@ -399,7 +257,7 @@ function FeedItem({ n, t, time, c, delay, isFirst }) {
   );
 }
 
-/* ─── Typing chat bubble ─────────────────────────────────────────────────── */
+/* ─── Typing indicator ───────────────────────────────────────────────────── */
 function TypingDot() {
   return (
     <span style={{ display: 'inline-block', width: 5, height: 5, borderRadius: '50%', background: 'var(--ink-400)', margin: '0 2px', animation: 'typingBounce 1.2s ease-in-out infinite' }} />
@@ -408,7 +266,6 @@ function TypingDot() {
 
 function ChatMock() {
   const [step, setStep] = React.useState(0);
-
   React.useEffect(() => {
     const delays = [800, 1600, 2600, 3400];
     const timers = delays.map((d, i) => setTimeout(() => setStep(i + 1), d));
@@ -421,8 +278,7 @@ function ChatMock() {
         background: from === 'ai' ? '#fff' : 'var(--accent-soft)',
         color: from === 'ai' ? 'var(--ink-900)' : 'var(--accent-text)',
         border: from === 'ai' ? '1px solid var(--line)' : 'none',
-        borderRadius: 12, padding: '7px 10px',
-        fontSize: 12, maxWidth: '88%',
+        borderRadius: 12, padding: '7px 10px', fontSize: 12, maxWidth: '88%',
         boxShadow: from === 'ai' ? '0 1px 2px rgba(15,46,74,0.04)' : 'none',
         lineHeight: 1.4,
       }}>{text}</div>
@@ -441,12 +297,7 @@ function ChatMock() {
       )}
       {step >= 4 && bubble('ai', 'R$ 280 a sessão. Reservo quinta 14h pra você?', 'IA · 2s pra responder')}
       {step >= 4 && (
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 5,
-          background: 'var(--success-bg)', color: 'var(--success)',
-          padding: '5px 9px', borderRadius: 999,
-          fontSize: 10, fontWeight: 600, marginTop: 3,
-        }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'var(--success-bg)', color: 'var(--success)', padding: '5px 9px', borderRadius: 999, fontSize: 10, fontWeight: 600, marginTop: 3 }}>
           <Icon name="check-circle-2" size={11} />
           Agendamento criado · 0 intervenção humana
         </div>
@@ -455,11 +306,10 @@ function ChatMock() {
   );
 }
 
-/* ─── Hero dashboard inside Mac window ───────────────────────────────────── */
+/* ─── Hero dashboard ─────────────────────────────────────────────────────── */
 function HeroDashboard() {
   return (
     <MacWindow title="Painel CLINIQ · Bella Vita Estética">
-      {/* Header row */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 600, color: 'var(--ink-900)' }}>
           <span style={heroStyles.cardLiveDot} />
@@ -470,16 +320,12 @@ function HeroDashboard() {
           Hoje · Maio 2026
         </div>
       </div>
-
-      {/* Stats */}
       <div style={heroStyles.statGrid} className="hero-stats">
         <StatCard label="Leads no mês" value="142" delta="+38% vs abril" />
         <StatCard label="Agendados" value="89" delta="62,7% conversão" />
         <StatCard label="No-show" value="6%" delta="−24 pp em 60d" color="var(--success)" />
         <StatCard label="Nota Google" value="4,9 ★" delta="+34 reviews" />
       </div>
-
-      {/* Feed */}
       <div style={heroStyles.feedRow} className="hero-feeds">
         <div style={heroStyles.feedCol}>
           <div style={heroStyles.feedHeader}>Confirmações automáticas</div>
@@ -542,7 +388,7 @@ function FloatNoShow() {
   );
 }
 
-/* ─── Rotating word cycler for hero headline ────────────────────────────── */
+/* ─── Rotating word cycler ───────────────────────────────────────────────── */
 function WordCycler({ words }) {
   const [idx, setIdx] = React.useState(0);
   const [exiting, setExiting] = React.useState(false);
@@ -581,139 +427,68 @@ function WordCycler({ words }) {
   );
 }
 
-/* ─── Hero badge (21st.dev hero-badge pattern) ───────────────────────────── */
-function HeroBadge({ tag, text, onClick }) {
-  const [hov, setHov] = React.useState(false);
-  return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 10,
-        background: 'rgba(255,255,255,0.88)',
-        border: '1px solid ' + (hov ? 'rgba(77,182,172,0.30)' : 'rgba(15,46,74,0.10)'),
-        borderRadius: 999,
-        padding: '5px 14px 5px 5px',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        cursor: onClick ? 'pointer' : 'default',
-        boxShadow: hov ? '0 4px 16px rgba(15,46,74,0.10)' : '0 1px 4px rgba(15,46,74,0.05)',
-        transition: 'border-color 220ms, box-shadow 220ms',
-      }}
-    >
-      <span style={{
-        display: 'inline-flex', alignItems: 'center', gap: 5,
-        background: 'var(--accent-soft)', color: 'var(--accent-text)',
-        borderRadius: 999, padding: '5px 10px',
-        fontSize: 10.5, fontWeight: 700,
-        letterSpacing: '0.08em', textTransform: 'uppercase', flexShrink: 0,
-      }}>
-        <Icon name="sparkles" size={10} />
-        {tag}
-      </span>
-      <span style={{
-        fontSize: 13, color: 'var(--ink-700)', fontWeight: 500,
-        letterSpacing: '-0.01em', whiteSpace: 'nowrap',
-      }}>
-        {text}
-      </span>
-      <span style={{
-        display: 'inline-flex', color: 'var(--ink-400)', flexShrink: 0,
-        transform: hov ? 'translateX(2px)' : 'translateX(0)',
-        transition: 'transform 220ms cubic-bezier(0.22,1,0.36,1)',
-      }}>
-        <Icon name="chevron-right" size={14} />
-      </span>
-    </div>
-  );
-}
-
 /* ─── Hero section ───────────────────────────────────────────────────────── */
 function Hero({ onCtaClick }) {
   return (
-    <section style={{
-      background: 'radial-gradient(ellipse 110% 70% at 50% -5%, #eef6f5 0%, #fafbfc 55%)',
-      position: 'relative',
-      padding: 0,
-    }}>
-      {/* ── Full-viewport: dots contained here only ── */}
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-        paddingTop: 80,
-      }}>
-        <DottedSurface />
-        <div className="container-wide" style={{ width: '100%', position: 'relative', zIndex: 1 }}>
-          <Reveal>
-            <div style={heroStyles.textCol}>
-              <HeroBadge
-                tag="IA NATIVA"
-                text="Construído sobre GoHighLevel"
-                onClick={onCtaClick}
-              />
+    <section style={{ padding: 0 }}>
 
-              <h1
-                className="display"
-                style={{
-                  fontSize: 'clamp(40px, 5.6vw, 82px)',
-                  margin: '28px 0 0',
-                  lineHeight: 1.0,
-                }}
-              >
-                <WordCycler words={['Agenda cheia.', 'No-show zero.', '5★ no Google.']} /><br />
-                <span className="display-italic-line">
-                  <AnimatedUnderlineText>no piloto automático.</AnimatedUnderlineText>
-                </span>
-              </h1>
-
-              <p style={heroStyles.lede}>
-                Sistema completo de captação, conversão e reputação para clínicas de estética —
-                <strong style={{ color: 'var(--ink-900)' }}> no piloto automático</strong>, enquanto você atende.
-                Sem contratar mais ninguém. Sem depender de planilha.
-              </p>
-
-              <div style={heroStyles.ctaRow}>
-                <button className="btn btn-primary btn-lg" onClick={onCtaClick}>
-                  Quero o diagnóstico gratuito
-                  <Icon name="arrow-right" size={16} />
-                </button>
-                <a
-                  href="#solucao"
-                  className="btn btn-ghost btn-lg"
-                  onClick={(e) => { e.preventDefault(); document.getElementById('solucao')?.scrollIntoView({ behavior: 'smooth' }); }}
+      {/* ── Sticky above-fold: full viewport, sticks while Mac slides over ── */}
+      <div className="hero-sticky-fold">
+        <HeroHighlight style={{ height: '100%' }}>
+          <div className="container-wide" style={{ width: '100%', paddingTop: 80 }}>
+            <Reveal>
+              <div style={heroStyles.textCol}>
+                <h1
+                  className="display"
+                  style={{ fontSize: 'clamp(40px, 5.6vw, 82px)', margin: '0', lineHeight: 1.0 }}
                 >
-                  Ver como funciona
-                </a>
-              </div>
+                  <WordCycler words={['Agenda cheia', 'No-show zero', '5★ no Google']} /><br />
+                  <AnimatedUnderlineText>no piloto automático.</AnimatedUnderlineText>
+                </h1>
 
-              <div style={heroStyles.microproof}>
-                <div style={heroStyles.microDots}>
-                  {['#E08B7E', '#7E9AE0', '#7AB89A', '#E0B87E'].map((c, i) => (
-                    <span key={i} style={{ ...heroStyles.microDot, background: c }}>
-                      {['R', 'J', 'C', 'M'][i]}
-                    </span>
-                  ))}
+                <p style={heroStyles.lede}>
+                  Sistema completo de captação, conversão e reputação para clínicas de estética —
+                  <strong style={{ color: 'var(--ink-900)' }}> no piloto automático</strong>, enquanto você atende.
+                  Sem contratar mais ninguém. Sem depender de planilha.
+                </p>
+
+                <div style={heroStyles.ctaRow}>
+                  <button className="btn btn-primary btn-lg" onClick={onCtaClick}>
+                    Quero o diagnóstico gratuito
+                    <Icon name="arrow-right" size={16} />
+                  </button>
+                  <a
+                    href="#solucao"
+                    className="btn btn-ghost btn-lg"
+                    onClick={(e) => { e.preventDefault(); document.getElementById('solucao')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  >
+                    Ver como funciona
+                  </a>
                 </div>
-                <span>
-                  <strong style={{ color: 'var(--ink-900)' }}>Sem fidelidade.</strong>{' '}
-                  Cancele quando quiser. 30 dias de garantia.
-                </span>
+
+                <div style={heroStyles.microproof}>
+                  <div style={heroStyles.microDots}>
+                    {['#E08B7E', '#7E9AE0', '#7AB89A', '#E0B87E'].map((c, i) => (
+                      <span key={i} style={{ ...heroStyles.microDot, background: c }}>
+                        {['R', 'J', 'C', 'M'][i]}
+                      </span>
+                    ))}
+                  </div>
+                  <span>
+                    <strong style={{ color: 'var(--ink-900)' }}>Sem fidelidade.</strong>{' '}
+                    Cancele quando quiser. 30 dias de garantia.
+                  </span>
+                </div>
               </div>
-            </div>
-          </Reveal>
-        </div>
+            </Reveal>
+          </div>
+        </HeroHighlight>
       </div>
 
-      {/* ── Below fold: Mac dashboard ── */}
-      <div style={{ paddingBottom: 80, position: 'relative', zIndex: 1 }}>
+      {/* ── Mac layer slides up over the sticky hero ── */}
+      <div className="hero-mac-layer">
         <div className="container-wide">
-          <Reveal delay={180}>
+          <Reveal delay={80}>
             <div style={heroStyles.visual}>
               <HeroDashboard />
               <FloatLead />
@@ -725,6 +500,21 @@ function Hero({ onCtaClick }) {
       </div>
 
       <style>{`
+        .hero-sticky-fold {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          z-index: 1;
+          overflow: hidden;
+        }
+        .hero-mac-layer {
+          position: relative;
+          z-index: 2;
+          background: var(--surface);
+          padding: 64px 0 80px;
+          border-radius: 20px 20px 0 0;
+          box-shadow: 0 -20px 60px rgba(15,46,74,0.08);
+        }
         @keyframes pulse {
           0%, 100% { box-shadow: 0 0 0 3px rgba(47,163,122,0.20); }
           50%       { box-shadow: 0 0 0 7px rgba(47,163,122,0.06); }
