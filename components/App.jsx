@@ -1,5 +1,5 @@
 /* global React, ReactDOM, lucide,
-   Nav, Hero, Problem, Flow, Calculator, Benefits, Proof, Offer, Guarantee, Objections, Faq, CtaFinal, Footer, Quiz,
+   Nav, Hero, LogoCloud, Section2, Problem, Flow, Calculator, Benefits, Proof, Offer, Guarantee, Objections, Faq, CtaFinal, Footer, Quiz,
    useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakColor, TweakToggle */
 const { useState, useEffect } = React;
 
@@ -62,6 +62,8 @@ function App() {
     <>
       <Nav onCtaClick={openQuiz} />
       <Hero onCtaClick={openQuiz} />
+      <LogoCloud />
+      <Section2 />
       <Problem />
       {t.showStoryboard && <Flow />}
       {t.showCalculator && <Calculator onCtaClick={openQuiz} />}

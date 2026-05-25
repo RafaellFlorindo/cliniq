@@ -62,7 +62,6 @@ const flowStyles = {
     lineHeight: 1.5,
   },
 
-  /* Visual zone */
   visualZone: {
     flex: 1,
     background: '#fff',
@@ -74,7 +73,6 @@ const flowStyles = {
     marginTop: 'auto',
   },
 
-  /* Connector line behind cards */
   line: {
     position: 'absolute',
     top: 44,

@@ -118,7 +118,6 @@ const quizStyles = {
     gap: 12,
   },
 
-  /* Thank-you */
   doneWrap: {
     padding: '52px 40px 44px',
     textAlign: 'center',

@@ -200,7 +200,7 @@ function Offer({ onCtaClick }) {
               </div>
 
               <div style={offerStyles.bullets}>
-                <span style={offerStyles.bullets.bullet || offerStyles.bullet}>
+                <span style={offerStyles.bullet}>
                   <Icon name="check" size={14} strokeWidth={2.5} color="var(--teal-200)" />
                   Sem fidelidade. Cancele quando quiser.
                 </span>

@@ -112,7 +112,6 @@ const ALL_TESTIMONIALS = [
 
 /* ─── Single scrolling column ──────────────────────────────────────────────── */
 function TestimonialsColumn({ testimonials, duration, className }) {
-  /* Duplicate the list so the loop is seamless */
   const doubled = [...testimonials, ...testimonials];
 
   return (
@@ -250,7 +249,6 @@ function Proof() {
           </div>
         </Reveal>
 
-        {/* ── Testimonials heading ── */}
         <Reveal>
           <div style={{ marginBottom: 32 }}>
             <span className="eyebrow" style={{ marginBottom: 8, display: 'block' }}>Depoimentos</span>
@@ -267,7 +265,6 @@ function Proof() {
           </div>
         </Reveal>
 
-        {/* ── 3-column infinite scroll ── */}
         <Reveal>
           <div style={{
             display: 'flex',
