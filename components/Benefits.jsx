@@ -33,13 +33,13 @@ const benefitsStyles = {
 
 const BENEFITS = [
   { icon: 'eye', title: 'Visibilidade total.', text: 'Você sabe de onde veio cada cliente e em que etapa cada lead está. Acabou o "achismo".' },
-  { icon: 'calendar-check', title: 'Agenda previsível.', text: 'Confirmações automáticas reduzem no-show — sem você ligar pra ninguém.' },
+  { icon: 'calendar-check', title: 'Agenda previsível.', text: 'Confirmações automáticas reduzem no-show. Sem você ligar pra ninguém.' },
   { icon: 'message-circle', title: 'Lead que sumiu, volta.', text: 'A IA retoma o contato no WhatsApp em segundos enquanto você está atendendo.' },
   { icon: 'star', title: 'Nota Google sobe.', text: 'Só avaliação positiva vai pro Google. A negativa fica em privado pra você resolver.' },
   { icon: 'trending-up', title: 'Buscas locais.', text: 'Mais reviews respondidas = mais relevância no algoritmo. Sua clínica aparece mais.' },
   { icon: 'globe', title: 'Site que vende.', text: 'Não uma vitrine parada. Formulário de 2 passos, agenda integrada, conversão real.' },
   { icon: 'users-round', title: 'Cresce sem contratar.', text: 'O sistema faz o trabalho operacional. Você foca em atender, não em apagar incêndio.' },
-  { icon: 'shield-check', title: 'Conformidade LGPD.', text: 'Consentimento, política de privacidade e tratamento de dados — tudo dentro da lei.' },
+  { icon: 'shield-check', title: 'Conformidade LGPD.', text: 'Consentimento, política de privacidade e tratamento de dados, tudo dentro da lei.' },
 ];
 
 function Benefits() {
@@ -49,7 +49,7 @@ function Benefits() {
         <Reveal style={benefitsStyles.header}>
           <span className="eyebrow">O que você ganha</span>
           <h2 className="display display-xl" style={{ marginTop: 12 }}>
-            Controle, previsibilidade e <span className="accent-underline">reputação</span> — sem esforço operacional.
+            Controle, previsibilidade e <span className="accent-underline">reputação</span> sem esforço operacional.
           </h2>
         </Reveal>
 

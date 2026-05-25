@@ -112,7 +112,7 @@ const STEPS = [
     icon: 'globe',
     num: '01',
     title: 'Te encontram & agendam.',
-    sub: 'Site otimizado pra SEO local. Formulário de 2 passos. Quem entra, agenda na hora — sem fricção.',
+    sub: 'Site otimizado pra SEO local. Formulário de 2 passos. Quem entra, agenda na hora, sem fricção.',
     visual: 'site',
   },
   {
@@ -188,7 +188,7 @@ function Flow() {
             Um sistema que trabalha <span className="accent-underline">enquanto você atende.</span>
           </h2>
           <p style={{ marginTop: 18, fontSize: 18, color: 'var(--ink-600)' }}>
-            Cinco etapas. Tudo automático. Tudo rastreado. Construído dentro do <strong style={{color:'var(--ink-900)'}}>GoHighLevel</strong> com IA nativa configurada pra clínica de estética.
+            Cinco etapas. Tudo automático. Tudo rastreado.
           </p>
         </Reveal>
 

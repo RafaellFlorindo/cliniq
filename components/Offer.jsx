@@ -154,7 +154,7 @@ function Offer({ onCtaClick }) {
             Plano Crescimento. <span className="accent-underline">Tudo incluso.</span>
           </h2>
           <p style={{ marginTop: 18, fontSize: 18, color: 'var(--ink-600)' }}>
-            Um único plano. Tudo configurado por nós. Você opera — não constrói.
+            Um único plano. Tudo configurado por nós. Você opera, não constrói.
           </p>
         </Reveal>
 

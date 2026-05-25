@@ -1,6 +1,6 @@
 /* global React, Icon, Reveal, GlowCard */
 
-/* ─── Dot-pattern + mouse-highlight background ───────────────────────────── */
+/* ─── Dot-pattern + mouse-highlight background (Aceternity-style) ─────────── */
 function HeroHighlight({ children, style }) {
   const [pos, setPos] = React.useState({ x: -500, y: -500 });
   const [hov, setHov] = React.useState(false);
@@ -13,23 +13,23 @@ function HeroHighlight({ children, style }) {
         setPos({ x: e.clientX - r.left, y: e.clientY - r.top });
       }}
       onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => { setHov(false); setPos({ x: -500, y: -500 }); }}
+      onMouseLeave={() => { setHov(false); setPos({ x: -9999, y: -9999 }); }}
     >
-      {/* Static neutral dot grid */}
+      {/* Static neutral dot grid — light, tight, subtle */}
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: 'radial-gradient(circle, rgba(15,46,74,0.13) 1.5px, transparent 1.5px)',
-        backgroundSize: '20px 20px',
+        backgroundImage: 'radial-gradient(circle, rgba(15,46,74,0.09) 1px, transparent 1px)',
+        backgroundSize: '16px 16px',
       }} />
-      {/* Teal dot highlight masked to cursor radius */}
+      {/* Teal dot highlight — revealed around cursor via radial mask */}
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: 'radial-gradient(circle, var(--teal-500) 1.5px, transparent 1.5px)',
-        backgroundSize: '20px 20px',
-        WebkitMaskImage: `radial-gradient(200px circle at ${pos.x}px ${pos.y}px, black 0%, transparent 100%)`,
-        maskImage: `radial-gradient(200px circle at ${pos.x}px ${pos.y}px, black 0%, transparent 100%)`,
-        opacity: hov ? 1 : 0,
-        transition: 'opacity 300ms',
+        backgroundImage: 'radial-gradient(circle, var(--teal-500) 1px, transparent 1px)',
+        backgroundSize: '16px 16px',
+        WebkitMaskImage: `radial-gradient(280px circle at ${pos.x}px ${pos.y}px, black 0%, transparent 100%)`,
+        maskImage: `radial-gradient(280px circle at ${pos.x}px ${pos.y}px, black 0%, transparent 100%)`,
+        opacity: hov ? 0.72 : 0,
+        transition: 'opacity 400ms ease',
       }} />
       <div style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', alignItems: 'center' }}>
         {children}
@@ -447,7 +447,7 @@ function Hero({ onCtaClick }) {
                 </h1>
 
                 <p style={heroStyles.lede}>
-                  Sistema completo de captação, conversão e reputação para clínicas de estética —
+                  Sistema completo de captação, conversão e reputação para clínicas de estética,
                   <strong style={{ color: 'var(--ink-900)' }}> no piloto automático</strong>, enquanto você atende.
                   Sem contratar mais ninguém. Sem depender de planilha.
                 </p>
@@ -512,8 +512,8 @@ function Hero({ onCtaClick }) {
           z-index: 2;
           background: var(--surface);
           padding: 64px 0 80px;
-          border-radius: 20px 20px 0 0;
-          box-shadow: 0 -20px 60px rgba(15,46,74,0.08);
+          border-radius: 24px 24px 0 0;
+          box-shadow: 0 -28px 72px rgba(15,46,74,0.10);
         }
         @keyframes pulse {
           0%, 100% { box-shadow: 0 0 0 3px rgba(47,163,122,0.20); }

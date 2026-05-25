@@ -141,7 +141,7 @@
     white-space: nowrap;
   }
   .accent-underline {
-    background-image: linear-gradient(transparent 68%, var(--accent-soft) 68%);
+    background-image: linear-gradient(transparent 62%, rgba(77,182,172,0.18) 62%, rgba(77,182,172,0.14) 100%);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     padding: 0 0.08em;
@@ -151,7 +151,7 @@
   }
   /* On dark/navy sections, use a subtle teal tint instead of the light soft colour */
   .on-navy .accent-underline {
-    background-image: linear-gradient(transparent 68%, rgba(77,182,172,0.30) 68%);
+    background-image: linear-gradient(transparent 62%, rgba(77,182,172,0.18) 62%, rgba(77,182,172,0.14) 100%);
   }
 
   /* Navy section helper */

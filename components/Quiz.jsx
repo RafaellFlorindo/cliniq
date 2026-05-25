@@ -160,7 +160,7 @@ const QUESTIONS = [
   {
     step: 'Pergunta 1 de 4',
     q: 'Como anda sua agenda hoje?',
-    hint: 'Sem julgamento — todas as respostas são válidas.',
+    hint: 'Sem julgamento, todas as respostas são válidas.',
     options: [
       'Tem horário vago toda semana',
       'Lota algumas semanas, outras não',
@@ -196,7 +196,7 @@ const QUESTIONS = [
     q: 'Quando você gostaria de começar?',
     hint: 'Ajuda a gente a reservar onboarding.',
     options: [
-      'Imediato — quero ontem',
+      'Imediato, quero ontem',
       'Próximas 2 semanas',
       'Próximo mês',
       'Ainda estou pesquisando',

@@ -61,27 +61,27 @@ const objStyles = {
 const OBJECTIONS = [
   {
     q: '"Não entendo de tecnologia. Tenho medo de não conseguir usar."',
-    a: <>Você não precisa entender. A gente configura <strong>tudo do zero</strong> — fluxos, IA, site, dashboard. Você recebe o sistema pronto, treinamento de uso e suporte contínuo. Sua função é atender os clientes que o sistema vai trazer.</>,
+    a: <>Você não precisa entender. A gente configura <strong>tudo do zero</strong>: fluxos, IA, site, dashboard. Você recebe o sistema pronto, treinamento de uso e suporte contínuo. Sua função é atender os clientes que o sistema vai trazer.</>,
   },
   {
     q: '"É caro pra minha realidade agora."',
-    a: <>Uma clínica média com 20% de no-show perde de <strong>R$ 2.000 a R$ 5.000/mês</strong> em horários vagos. O sistema custa R$ 1.497/mês. A conta fecha no primeiro mês — às vezes na primeira semana. Use a calculadora acima.</>,
+    a: <>Uma clínica média com 20% de no-show perde de <strong>R$ 2.000 a R$ 5.000/mês</strong> em horários vagos. O sistema custa R$ 1.497/mês. A conta fecha no primeiro mês, às vezes na primeira semana. Use a calculadora acima.</>,
   },
   {
-    q: '"Já tentei automação barata e WhatsApp Business — não funcionou."',
-    a: <>WhatsApp Business não tem IA. Não rastreia lead. Não reagenda. Não filtra avaliação. O que você usou antes era uma <strong>ferramenta isolada</strong> — isso aqui é um sistema integrado, do primeiro contato até a estrela no Google.</>,
+    q: '"Já tentei automação barata e WhatsApp Business. Não funcionou."',
+    a: <>WhatsApp Business não tem IA. Não rastreia lead. Não reagenda. Não filtra avaliação. O que você usou antes era uma <strong>ferramenta isolada</strong>. Isso aqui é um sistema integrado, do primeiro contato até a estrela no Google.</>,
   },
   {
     q: '"Não tenho controle da minha clínica. Não sei se vai resolver."',
-    a: <>Esse é exatamente o problema que o sistema resolve. O dashboard mostra cada etapa — de onde o lead veio, o que fez, se agendou, se compareceu, se avaliou. <strong>Você vai ter mais controle do que qualquer planilha já deu.</strong></>,
+    a: <>Esse é exatamente o problema que o sistema resolve. O dashboard mostra cada etapa: de onde o lead veio, o que fez, se agendou, se compareceu, se avaliou. <strong>Você vai ter mais controle do que qualquer planilha já deu.</strong></>,
   },
   {
     q: '"E se a tecnologia parar de funcionar?"',
-    a: <>O sistema roda no <strong>GoHighLevel</strong> — plataforma usada por mais de 60.000 negócios no mundo, com uptime &gt;99,9%. Suporte está incluso na mensalidade — se algo precisa de ajuste, a gente entra.</>,
+    a: <>O sistema roda no <strong>GoHighLevel</strong>, plataforma usada por mais de 60.000 negócios no mundo, com uptime &gt;99,9%. Suporte está incluso na mensalidade. Se algo precisa de ajuste, a gente entra.</>,
   },
   {
     q: '"Minha agenda eu mesma gerencio. Dá pra integrar?"',
-    a: <>Sim. O calendário do sistema se encaixa na sua rotina — você define horários, bloqueios e regras. <strong>A IA trabalha dentro da sua agenda</strong>, não no lugar dela.</>,
+    a: <>Sim. O calendário do sistema se encaixa na sua rotina. Você define horários, bloqueios e regras. <strong>A IA trabalha dentro da sua agenda</strong>, não no lugar dela.</>,
   },
 ];
 

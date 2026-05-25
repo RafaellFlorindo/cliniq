@@ -1,12 +1,20 @@
 /* global React, Container, Icon, Reveal, Eyebrow */
 
 const problemStyles = {
-  section: { background: 'var(--surface)' },
+  section: {
+    background: 'var(--surface)',
+    borderRadius: '28px 28px 0 0',
+    boxShadow: '0 -32px 80px rgba(15,46,74,0.09)',
+    position: 'relative',
+    zIndex: 3,
+    marginTop: -28,
+  },
   header: { maxWidth: 820, marginBottom: 64 },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gridTemplateColumns: 'repeat(3, 1fr)',
     gap: 16,
+    alignItems: 'stretch',
   },
   item: {
     background: 'var(--paper)',
@@ -16,6 +24,7 @@ const problemStyles = {
     display: 'flex',
     flexDirection: 'column',
     gap: 12,
+    height: '100%',
     transition: 'transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out)',
   },
   itemIconWrap: {
@@ -38,8 +47,8 @@ const problemStyles = {
     lineHeight: 1.5,
   },
   footnote: {
-    marginTop: 40,
-    padding: '20px 24px',
+    margin: '40px auto 0',
+    padding: '20px 28px',
     background: 'var(--paper)',
     border: '1px solid var(--line)',
     borderLeft: '4px solid var(--accent)',
@@ -47,7 +56,7 @@ const problemStyles = {
     fontSize: 15,
     color: 'var(--ink-700)',
     lineHeight: 1.5,
-    maxWidth: 860,
+    textAlign: 'center',
   },
 };
 
@@ -55,8 +64,8 @@ const PAINS = [
   { icon: 'eye-off',      title: 'Você não sabe quantos leads chegaram esse mês.',           sub: 'Nem quantos viraram cliente. Tudo no "achismo".' },
   { icon: 'calendar-x',   title: 'Sua agenda tem buracos toda semana.',                       sub: 'No-show avisado em cima da hora, horário vago, prejuízo na conta.' },
   { icon: 'message-circle-off', title: 'Cliente some depois do atendimento.',                 sub: 'Você não tem como trazer de volta de forma sistemática.' },
-  { icon: 'star-off',     title: 'Seu Google está parado.',                                    sub: 'Poucas avaliações — e as que chegam, ninguém responde.' },
-  { icon: 'globe',        title: 'Seu site não converte — ou nem existe.',                    sub: 'Quem te encontra não consegue agendar em 2 cliques.' },
+  { icon: 'star-off',     title: 'Seu Google está parado.',                                    sub: 'Poucas avaliações. As que chegam, ninguém responde.' },
+  { icon: 'globe',        title: 'Seu site não converte, ou nem existe.',                    sub: 'Quem te encontra não consegue agendar em 2 cliques.' },
   { icon: 'messages-square', title: 'Seu WhatsApp é uma bagunça.',                            sub: 'Mensagens espalhadas, sem etiqueta, sem rastreio.' },
 ];
 
@@ -75,9 +84,9 @@ function Problem() {
           </p>
         </Reveal>
 
-        <div style={problemStyles.grid}>
+        <div style={problemStyles.grid} className="pain-grid">
           {PAINS.map((p, i) => (
-            <Reveal key={i} delay={i * 60}>
+            <Reveal key={i} delay={i * 60} style={{ display: 'flex', flexDirection: 'column' }}>
               <div
                 style={problemStyles.item}
                 onMouseEnter={(e)=>{ e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='var(--shadow-md)'; }}
@@ -96,10 +105,18 @@ function Problem() {
         <Reveal>
           <div style={problemStyles.footnote}>
             <strong style={{ color: 'var(--ink-900)' }}>A causa é a mesma:</strong>{' '}
-            sua clínica tem esforço, tem vontade — mas não tem um <strong style={{color:'var(--ink-900)'}}>sistema</strong> rodando 24h.
+            sua clínica tem esforço, tem vontade, mas não tem um <strong style={{color:'var(--ink-900)'}}>sistema</strong> rodando 24h.
           </div>
         </Reveal>
       </div>
+      <style>{`
+        @media (max-width: 900px) {
+          #problema .pain-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 560px) {
+          #problema .pain-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }

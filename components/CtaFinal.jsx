@@ -67,7 +67,7 @@ function CtaFinal({ onCtaClick }) {
           </h2>
           <p style={ctaStyles.lede}>
             O sistema está pronto. A configuração é nossa. O risco é zero nos primeiros 30 dias.
-            Comece pelo diagnóstico — 4 perguntas, 90 segundos.
+            Comece pelo diagnóstico: 4 perguntas, 90 segundos.
           </p>
 
           <div style={ctaStyles.ctaRow}>

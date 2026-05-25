@@ -47,11 +47,11 @@ const faqStyles = {
 
 const FAQS = [
   { q: 'O sistema funciona pra qualquer tipo de clínica de estética?',
-    a: <>Foi construído especificamente pra clínicas de estética — procedimentos típicos, calendário de agenda, avaliação pós-atendimento. Não é genérico. Atende desde clínica de procedimentos não-invasivos até clínicas com ticket alto de estética avançada.</> },
+    a: <>Foi construído especificamente pra clínicas de estética: procedimentos típicos, calendário de agenda, avaliação pós-atendimento. Não é genérico. Atende desde clínica de procedimentos não-invasivos até clínicas com ticket alto de estética avançada.</> },
   { q: 'Quanto tempo leva pra estar tudo funcionando?',
-    a: <>Em média <strong>7 a 14 dias</strong> após o onboarding. A configuração é nossa — você não precisa fazer nada técnico. Recebe o sistema pronto e o treinamento.</> },
+    a: <>Em média <strong>7 a 14 dias</strong> após o onboarding. A configuração é nossa e você não precisa fazer nada técnico. Recebe o sistema pronto e o treinamento.</> },
   { q: 'Preciso já ter site ou posso começar do zero?',
-    a: <>Pode começar do zero. O site two-step <strong>já está incluso</strong> — criamos e otimizamos pra sua cidade, com SEO local e formulário integrado à agenda.</> },
+    a: <>Pode começar do zero. O site two-step <strong>já está incluso</strong>. Criamos e otimizamos pra sua cidade, com SEO local e formulário integrado à agenda.</> },
   { q: 'E se eu não gostar?',
     a: <>Você tem 30 dias de garantia. Se não fizer sentido, devolvemos o setup integral sem perguntas.</> },
   { q: 'Tem suporte depois que o sistema estiver rodando?',
@@ -59,9 +59,9 @@ const FAQS = [
   { q: 'Quais as formas de pagamento?',
     a: <>Cartão de crédito, Pix ou boleto. Setup pago uma vez. Mensalidade recorrente <strong>sem fidelidade mínima</strong>.</> },
   { q: 'Preciso contratar algum outro serviço além desse?',
-    a: <>Não. Tudo roda dentro do GoHighLevel — que já está incluso. Você não precisa contratar plataforma separada, ferramenta de e-mail, agendador externo, nada.</> },
+    a: <>Não. Tudo roda dentro do GoHighLevel, que já está incluso. Você não precisa contratar plataforma separada, ferramenta de e-mail, agendador externo, nada.</> },
   { q: 'E o tráfego pago? Vocês cuidam?',
-    a: <>Gestão de tráfego não está inclusa — mas o sistema já vem preparado pro dia que você quiser rodar anúncios, com <strong>Pixel Meta CAPI server-side</strong> configurado.</> },
+    a: <>Gestão de tráfego não está inclusa, mas o sistema já vem preparado pro dia que você quiser rodar anúncios, com <strong>Pixel Meta CAPI server-side</strong> configurado.</> },
 ];
 
 function Faq() {

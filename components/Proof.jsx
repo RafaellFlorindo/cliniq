@@ -56,7 +56,7 @@ const ALL_TESTIMONIALS = [
     name: 'Fernanda Oliveira',
     role: 'Espaço Pristine · Rio de Janeiro, RJ',
     image: 'https://randomuser.me/api/portraits/women/21.jpg',
-    text: 'O no-show era meu maior pesadelo — perdia quase R$8 mil por mês. Hoje está em 4% e os lembretes automáticos fazem todo o trabalho.',
+    text: 'O no-show era meu maior pesadelo. Perdia quase R$8 mil por mês. Hoje está em 4% e os lembretes automáticos fazem todo o trabalho.',
     metric: 'No-show: 28% → 4% em 60 dias',
   },
   {
