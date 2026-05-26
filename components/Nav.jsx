@@ -1,7 +1,7 @@
-/* global React, Container, Button, Icon */
-const { useState, useEffect } = React;
+/* global React, Icon */
+const { useState, useEffect, useRef } = React;
 
-/* ─── Cliniq logo mark with interactive + ───────────────────────────────── */
+/* ─── Logo mark ──────────────────────────────────────────────────────────── */
 function LogoMark() {
   const [hov, setHov] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -17,21 +17,19 @@ function LogoMark() {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        width: 34, height: 34, borderRadius: 9,
+        width: 32, height: 32, borderRadius: 8,
         background: 'var(--navy-900)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         cursor: 'pointer', position: 'relative', overflow: 'hidden', flexShrink: 0,
-        transition: 'transform 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms',
-        transform: hov ? 'scale(1.10)' : 'scale(1)',
-        boxShadow: hov ? '0 4px 14px rgba(15,46,74,0.35)' : 'none',
+        transition: 'transform 220ms cubic-bezier(0.22,1,0.36,1), box-shadow 220ms',
+        transform: hov ? 'scale(1.08)' : 'scale(1)',
+        boxShadow: hov ? '0 4px 16px rgba(15,46,74,0.30)' : 'none',
       }}
     >
-      <svg
-        viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"
-        width="18" height="18"
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
         style={{
           transition: 'transform 300ms cubic-bezier(0.22,1,0.36,1)',
-          transform: clicked ? 'rotate(45deg) scale(1.15)' : hov ? 'rotate(14deg)' : 'rotate(0deg)',
+          transform: clicked ? 'rotate(45deg) scale(1.15)' : hov ? 'rotate(12deg)' : 'rotate(0deg)',
         }}
       >
         <rect x="12" y="3" width="4" height="22" rx="2" fill="#4DB6AC"/>
@@ -51,100 +49,169 @@ function LogoMark() {
   );
 }
 
-const navStyles = {
-  wrap: {
-    position: 'fixed',
-    top: 0, left: 0, right: 0,
-    zIndex: 100,
-    transition: 'background 220ms var(--ease-out), backdrop-filter 220ms var(--ease-out), border-color 220ms var(--ease-out), padding 220ms var(--ease-out)',
-  },
-  inner: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 72,
-  },
-  brand: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 10,
-    color: 'var(--ink-900)',
-    fontFamily: 'var(--font-display)',
-    fontSize: 21,
-    fontWeight: 800,
-    letterSpacing: '0.04em',
-    textDecoration: 'none',
-    textTransform: 'uppercase',
-  },
-  brandMark: {
-    width: 32, height: 32, borderRadius: 10,
-    background: 'var(--navy-900)', color: '#fff',
-    display: 'grid', placeItems: 'center',
-    fontWeight: 700, fontSize: 14,
-    letterSpacing: '-0.01em',
-  },
-  links: {
-    display: 'flex', alignItems: 'center', gap: 32,
-    fontSize: 14, fontWeight: 400, letterSpacing: '0.01em',
-  },
-  link: {
-    color: 'var(--ink-600)',
-    textDecoration: 'none',
-    transition: 'color 140ms var(--ease-out)',
-    cursor: 'pointer',
-    fontStyle: 'italic',
-  },
-  right: {
-    display: 'flex', alignItems: 'center', gap: 12,
-  },
-};
+/* ─── Nav link with animated underline ──────────────────────────────────── */
+function NavLink({ href, children, onClick }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        position: 'relative',
+        color: hov ? 'var(--ink-900)' : 'var(--ink-500)',
+        textDecoration: 'none',
+        fontSize: 13.5,
+        fontWeight: 500,
+        letterSpacing: '0.01em',
+        transition: 'color 160ms ease',
+        paddingBottom: 2,
+      }}
+    >
+      {children}
+      <span style={{
+        position: 'absolute',
+        bottom: -1, left: 0,
+        height: 1.5,
+        width: hov ? '100%' : '0%',
+        background: 'var(--accent)',
+        borderRadius: 99,
+        transition: 'width 220ms cubic-bezier(0.22,1,0.36,1)',
+      }} />
+    </a>
+  );
+}
 
+/* ─── Nav ────────────────────────────────────────────────────────────────── */
 function Nav({ onCtaClick }) {
   const [scrolled, setScrolled] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrollY(y);
+      setScrolled(y > 40);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const wrapStyle = {
-    ...navStyles.wrap,
-    background: scrolled ? 'rgba(255,255,255,0.78)' : 'transparent',
-    backdropFilter: scrolled ? 'saturate(140%) blur(14px)' : 'none',
-    WebkitBackdropFilter: scrolled ? 'saturate(140%) blur(14px)' : 'none',
-    borderBottom: scrolled ? '1px solid var(--line)' : '1px solid transparent',
-  };
-
   const scrollTo = (id) => (e) => {
     e.preventDefault();
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <header style={wrapStyle}>
-      <div className="container-wide" style={navStyles.inner}>
-        <a href="#" style={navStyles.brand} onClick={(e)=>{e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'});}}>
+    <header style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0,
+      zIndex: 100,
+      /* fade-in the glass layer */
+      background: scrolled ? 'rgba(255,255,255,0.82)' : 'rgba(255,255,255,0)',
+      backdropFilter: scrolled ? 'saturate(160%) blur(20px)' : 'none',
+      WebkitBackdropFilter: scrolled ? 'saturate(160%) blur(20px)' : 'none',
+      borderBottom: scrolled ? '1px solid rgba(15,46,74,0.07)' : '1px solid transparent',
+      boxShadow: scrolled ? '0 1px 0 rgba(255,255,255,0.6) inset, 0 4px 24px rgba(15,46,74,0.05)' : 'none',
+      transition: 'background 280ms ease, backdrop-filter 280ms ease, border-color 280ms ease, box-shadow 280ms ease',
+    }}>
+      <div className="container-wide" style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: scrolled ? 60 : 68,
+        transition: 'height 280ms ease',
+      }}>
+
+        {/* Brand */}
+        <a
+          href="#"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 9,
+            textDecoration: 'none',
+            fontFamily: 'var(--font-display)',
+            fontSize: 18, fontWeight: 800,
+            letterSpacing: '0.05em',
+            color: 'var(--ink-900)',
+            textTransform: 'uppercase',
+          }}
+        >
           <LogoMark />
-          <span>CLINI<span style={{ color: 'var(--teal-500)' }}>Q</span></span>
+          CLINI<span style={{ color: 'var(--teal-500)' }}>Q</span>
         </a>
-        <nav style={navStyles.links} className="nav-links">
-          <a href="#problema" style={navStyles.link} onClick={scrollTo('problema')}>Problema</a>
-          <a href="#solucao" style={navStyles.link} onClick={scrollTo('solucao')}>Como funciona</a>
-          <a href="#oferta" style={navStyles.link} onClick={scrollTo('oferta')}>Plano</a>
-          <a href="#faq" style={navStyles.link} onClick={scrollTo('faq')}>Perguntas</a>
+
+        {/* Center links */}
+        <nav className="nav-links" style={{
+          display: 'flex', alignItems: 'center', gap: 28,
+        }}>
+          <NavLink href="#problema" onClick={scrollTo('problema')}>Problema</NavLink>
+          <NavLink href="#solucao"  onClick={scrollTo('solucao')}>Como funciona</NavLink>
+          <NavLink href="#oferta"   onClick={scrollTo('oferta')}>Plano</NavLink>
+          <NavLink href="#faq"      onClick={scrollTo('faq')}>Perguntas</NavLink>
         </nav>
-        <div style={navStyles.right}>
-          <button className="btn btn-primary btn-sm" onClick={onCtaClick} style={{borderRadius: 999}}>
+
+        {/* Right: CTA */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {/* Ghost secondary */}
+          <button
+            className="nav-ghost"
+            onClick={onCtaClick}
+            style={{
+              background: 'none', border: 'none',
+              fontSize: 13, fontWeight: 500,
+              color: 'var(--ink-500)',
+              cursor: 'pointer', padding: '0 4px',
+              fontFamily: 'var(--font-sans)',
+              transition: 'color 160ms',
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--ink-900)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-500)'}
+          >
+            Entrar
+          </button>
+
+          {/* Primary CTA */}
+          <button
+            onClick={onCtaClick}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              background: 'var(--navy-900)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 999,
+              padding: '9px 18px',
+              fontSize: 13, fontWeight: 600,
+              fontFamily: 'var(--font-sans)',
+              cursor: 'pointer',
+              letterSpacing: '0.01em',
+              transition: 'background 180ms, transform 140ms, box-shadow 180ms',
+              boxShadow: '0 2px 8px rgba(15,46,74,0.18)',
+              whiteSpace: 'nowrap',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'var(--teal-500)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(77,182,172,0.35)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--navy-900)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(15,46,74,0.18)';
+            }}
+          >
             Fazer diagnóstico
-            <Icon name="arrow-right" size={14} />
+            <Icon name="arrow-right" size={13} />
           </button>
         </div>
       </div>
+
       <style>{`
-        @media (max-width: 820px) {
+        @media (max-width: 860px) {
           .nav-links { display: none !important; }
+          .nav-ghost  { display: none !important; }
         }
         @keyframes logoRipple {
           from { opacity: 1; transform: scale(0.4); }

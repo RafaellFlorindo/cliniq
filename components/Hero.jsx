@@ -208,10 +208,8 @@ function Hero({ onCtaClick }) {
 
       <style>{`
         .hero-sticky-fold {
-          position: sticky;
-          top: 0;
+          position: relative;
           height: 100vh;
-          z-index: 1;
           overflow: hidden;
         }
         @keyframes drawLine {

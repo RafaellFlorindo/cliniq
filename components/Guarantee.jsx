@@ -4,8 +4,11 @@ const gtStyles = {
   section: { background: 'var(--paper)' },
   grid: {
     display: 'grid',
-    gridTemplateColumns: '1.4fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gap: 20,
+    alignItems: 'stretch',
+    maxWidth: 960,
+    margin: '0 auto',
   },
   guaranteeCard: {
     background: 'var(--surface)',
@@ -96,8 +99,8 @@ function Guarantee() {
       <div className="container-wide">
         <div style={gtStyles.grid} className="gt-grid">
           {/* Garantia (real) */}
-          <Reveal>
-            <div style={gtStyles.guaranteeCard}>
+          <Reveal style={{ height: '100%' }}>
+            <div style={{...gtStyles.guaranteeCard, height: '100%', boxSizing: 'border-box'}}>
               <div style={gtStyles.shield}>
                 <Icon name="shield-check" size={40} strokeWidth={1.8} />
               </div>
@@ -116,8 +119,8 @@ function Guarantee() {
           </Reveal>
 
           {/* Escassez suave */}
-          <Reveal delay={100}>
-            <div style={gtStyles.scarcityCard}>
+          <Reveal delay={100} style={{ height: '100%' }}>
+            <div style={{...gtStyles.scarcityCard, height: '100%', boxSizing: 'border-box'}}>
               <div style={gtStyles.scarcityDecor} />
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <span style={gtStyles.pulseDot} />

@@ -206,13 +206,14 @@ function LogoCloud() {
     <div style={{
       background:'#fff',
       position:'relative',
-      overflow:'hidden',
       paddingTop:52,
       paddingBottom:64,
     }}>
 
-      {/* Sparkles voando atrás de tudo */}
-      <SparklesCanvas color="#4DB6AC" density={70} speed={0.20} />
+      {/* Sparkles — clipped only via the inner wrapper, sem overflow:hidden no pai */}
+      <div style={{ position:'absolute', inset:0, overflow:'hidden', pointerEvents:'none' }}>
+        <SparklesCanvas color="#4DB6AC" density={70} speed={0.20} />
+      </div>
 
       {/* Conteúdo acima das sparkles */}
       <div style={{ position:'relative', zIndex:1 }}>

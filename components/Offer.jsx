@@ -159,8 +159,8 @@ function Offer({ onCtaClick }) {
         </Reveal>
 
         <div style={offerStyles.grid} className="offer-grid">
-          <Reveal>
-            <div style={offerStyles.stack}>
+          <Reveal style={{ height: '100%' }}>
+            <div style={{...offerStyles.stack, height: '100%', boxSizing: 'border-box'}}>
               <div style={offerStyles.stackHead}>
                 <span style={offerStyles.stackTitle}>O que está incluso</span>
                 <span style={offerStyles.stackTag}>9 módulos</span>
@@ -181,8 +181,8 @@ function Offer({ onCtaClick }) {
             </div>
           </Reveal>
 
-          <Reveal delay={120}>
-            <div style={offerStyles.priceCard}>
+          <Reveal delay={120} style={{ height: '100%' }}>
+            <div style={{...offerStyles.priceCard, height: '100%', boxSizing: 'border-box'}}>
               <div style={offerStyles.priceDecor} />
               <span style={offerStyles.priceTag}>
                 <Icon name="zap" size={12} />
@@ -218,7 +218,7 @@ function Offer({ onCtaClick }) {
                 </span>
               </div>
 
-              <button className="btn btn-onnavy btn-lg" onClick={onCtaClick} style={{ width: '100%' }}>
+              <button className="btn btn-onnavy btn-lg" onClick={onCtaClick} style={{ width: '100%', marginTop: 32 }}>
                 Quero o diagnóstico gratuito
                 <Icon name="arrow-right" size={18} />
               </button>

@@ -119,7 +119,14 @@ function Objections() {
                       <Icon name="plus" size={16} />
                     </span>
                   </div>
-                  {open && <div style={objStyles.a}>{o.a}</div>}
+                  <div style={{
+                    ...objStyles.a,
+                    maxHeight: open ? 400 : 0,
+                    overflow: 'hidden',
+                    opacity: open ? 1 : 0,
+                    marginTop: open ? 14 : 0,
+                    transition: 'max-height 320ms var(--ease-out), opacity 260ms ease, margin-top 260ms',
+                  }}>{o.a}</div>
                 </div>
               </Reveal>
             );

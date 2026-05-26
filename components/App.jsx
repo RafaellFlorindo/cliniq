@@ -63,10 +63,10 @@ function App() {
       <Nav onCtaClick={openQuiz} />
       <Hero onCtaClick={openQuiz} />
       <LogoCloud />
-      <Section2 />
       <Problem />
-      {t.showStoryboard && <Flow />}
       {t.showCalculator && <Calculator onCtaClick={openQuiz} />}
+      <Section2 />
+      {t.showStoryboard && <Flow />}
       <Benefits />
       {t.showProofStrip && <Proof />}
       <Offer onCtaClick={openQuiz} />

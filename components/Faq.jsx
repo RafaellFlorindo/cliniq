@@ -97,9 +97,14 @@ function Faq() {
                     <Icon name="plus" size={16} />
                   </span>
                 </div>
-                {open && (
-                  <div style={faqStyles.body}>{f.a}</div>
-                )}
+                <div style={{
+                  ...faqStyles.body,
+                  maxHeight: open ? 300 : 0,
+                  overflow: 'hidden',
+                  opacity: open ? 1 : 0,
+                  paddingBottom: open ? 22 : 0,
+                  transition: 'max-height 300ms var(--ease-out), opacity 240ms ease, padding-bottom 260ms',
+                }}>{f.a}</div>
               </div>
             );
           })}

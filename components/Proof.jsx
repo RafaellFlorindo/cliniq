@@ -7,38 +7,36 @@ const proofStyles = {
   statBar: {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: 0,
-    background: 'var(--paper)',
-    border: '1px solid var(--line)',
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginBottom: 56,
+    gap: 12,
+    marginBottom: 48,
   },
   statCell: {
-    padding: '32px 24px',
-    borderRight: '1px solid var(--line)',
-    display: 'flex', flexDirection: 'column', gap: 8,
-    transition: 'background 200ms',
+    padding: '28px 24px',
+    background: 'var(--paper)',
+    border: '1px solid var(--line)',
+    borderRadius: 20,
+    display: 'flex', flexDirection: 'column', gap: 6,
+    transition: 'background 200ms, transform 220ms, box-shadow 220ms',
   },
   statValue: {
     fontFamily: 'var(--font-display)',
-    fontSize: 'clamp(36px, 4vw, 56px)',
+    fontSize: 'clamp(32px, 3.6vw, 52px)',
     fontWeight: 700,
     color: 'var(--ink-900)',
-    letterSpacing: '-0.025em',
+    letterSpacing: '-0.03em',
     fontFeatureSettings: '"tnum"',
     lineHeight: 1,
   },
   statLabel: {
-    fontSize: 13, color: 'var(--ink-500)', lineHeight: 1.4,
+    fontSize: 13, color: 'var(--ink-500)', lineHeight: 1.45,
   },
   ghlBar: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     background: 'var(--surface)',
     border: '1px solid var(--line)',
-    borderRadius: 6,
-    padding: '14px 22px',
-    marginBottom: 64,
+    borderRadius: 16,
+    padding: '16px 24px',
+    marginBottom: 56,
     gap: 16,
     flexWrap: 'wrap',
   },
@@ -208,12 +206,9 @@ function Proof() {
             ].map((s, i) => (
               <div
                 key={i}
-                style={{
-                  ...proofStyles.statCell,
-                  borderRight: s.last ? 'none' : '1px solid var(--line)',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = ''; }}
+                style={{ ...proofStyles.statCell }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,46,74,0.08)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = ''; e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
               >
                 <span style={proofStyles.statValue}>{s.value}</span>
                 <span style={proofStyles.statLabel}>{s.label}</span>
