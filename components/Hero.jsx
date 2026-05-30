@@ -7,7 +7,7 @@ function HeroHighlight({ children, style }) {
 
   return (
     <div
-      style={{ position: 'relative', overflow: 'hidden', background: '#fff', ...style }}
+      style={{ position: 'relative', overflow: 'hidden', background: 'transparent', ...style }}
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
         setPos({ x: e.clientX - r.left, y: e.clientY - r.top });
@@ -87,16 +87,26 @@ const heroStyles = {
     gap: 16, flexWrap: 'wrap', marginTop: 32,
   },
   microproof: {
-    marginTop: 20,
-    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-    fontSize: 12.5, color: 'var(--ink-500)',
+    marginTop: 24,
+    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
+    flexWrap: 'wrap',
+    fontSize: 13, color: 'var(--ink-500)',
+    maxWidth: 560, marginLeft: 'auto', marginRight: 'auto',
+    lineHeight: 1.55,
   },
-  microDots: { display: 'flex' },
-  microDot: {
-    width: 26, height: 26, borderRadius: 999,
-    border: '2px solid #fff', marginLeft: -8,
-    display: 'grid', placeItems: 'center',
-    fontWeight: 600, fontSize: 9.5, color: '#fff',
+  microBadge: {
+    display: 'inline-flex', alignItems: 'center', gap: 6,
+    flexShrink: 0,
+    padding: '6px 12px', borderRadius: 999,
+    background: 'var(--accent-soft)', color: 'var(--accent-text)',
+    fontFamily: 'var(--font-sans)',
+    fontSize: 12.5, fontWeight: 700, letterSpacing: '-0.01em',
+    whiteSpace: 'nowrap',
+  },
+  microSource: {
+    marginLeft: 6, color: 'var(--ink-400)', fontSize: 11,
+    borderBottom: '1px dotted var(--ink-400)', textDecoration: 'none',
+    whiteSpace: 'nowrap',
   },
 };
 
@@ -146,10 +156,27 @@ function Hero({ onCtaClick }) {
 
       {/* ── Sticky above-fold: full viewport ── */}
       <div className="hero-sticky-fold" style={{ position: 'relative' }}>
+
+        {/* Ambient parallax orbs — profundidade sutil atrás do conteúdo */}
+        <div aria-hidden="true" data-parallax="0.20" style={{
+          position: 'absolute', top: '-12%', right: '2%', width: 'min(46vw, 560px)', height: 'min(46vw, 560px)',
+          borderRadius: '50%', zIndex: 0, pointerEvents: 'none', filter: 'blur(8px)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(77,182,172,0.22), rgba(77,182,172,0.06) 45%, transparent 68%)',
+        }} />
+        <div aria-hidden="true" data-parallax="-0.14" style={{
+          position: 'absolute', bottom: '-6%', left: '-6%', width: 'min(40vw, 480px)', height: 'min(40vw, 480px)',
+          borderRadius: '50%', zIndex: 0, pointerEvents: 'none', filter: 'blur(10px)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(16,48,73,0.10), transparent 66%)',
+        }} />
+        <div aria-hidden="true" data-parallax="0.08" style={{
+          position: 'absolute', top: '24%', left: '14%', width: 'min(22vw, 280px)', height: 'min(22vw, 280px)',
+          borderRadius: '50%', zIndex: 0, pointerEvents: 'none', filter: 'blur(6px)',
+          background: 'radial-gradient(circle at 50% 50%, rgba(195,168,110,0.12), transparent 64%)',
+        }} />
+
         <HeroHighlight style={{ height: '100%' }}>
           <div className="container-wide" style={{ width: '100%', paddingTop: 80 }}>
-            <Reveal>
-              <div style={heroStyles.textCol}>
+              <div style={heroStyles.textCol} className="hero-stagger">
                 <h1
                   className="display"
                   style={{ fontSize: 'clamp(40px, 5.6vw, 82px)', margin: '0', lineHeight: 1.0 }}
@@ -165,10 +192,13 @@ function Hero({ onCtaClick }) {
                 </p>
 
                 <div style={heroStyles.ctaRow}>
-                  <button className="btn btn-primary btn-lg" onClick={onCtaClick}>
-                    Quero o diagnóstico gratuito
-                    <Icon name="arrow-right" size={16} />
-                  </button>
+                  <MagneticButton strength={0.4}>
+                    <button className="btn btn-primary btn-lg" onClick={onCtaClick}>
+                      Quero o diagnóstico gratuito
+                      <Icon name="arrow-right" size={16} />
+                    </button>
+                  </MagneticButton>
+                  <MagneticButton strength={0.25}>
                   <a
                     href="#solucao"
                     className="btn btn-ghost btn-lg"
@@ -176,23 +206,22 @@ function Hero({ onCtaClick }) {
                   >
                     Ver como funciona
                   </a>
+                  </MagneticButton>
                 </div>
 
                 <div style={heroStyles.microproof}>
-                  <div style={heroStyles.microDots}>
-                    {['#E08B7E', '#7E9AE0', '#7AB89A', '#E0B87E'].map((c, i) => (
-                      <span key={i} style={{ ...heroStyles.microDot, background: c }}>
-                        {['R', 'J', 'C', 'M'][i]}
-                      </span>
-                    ))}
-                  </div>
+                  <span style={heroStyles.microBadge}>
+                    <Icon name="zap" size={13} color="var(--accent-text)" />
+                    21× mais conversão
+                  </span>
                   <span>
-                    <strong style={{ color: 'var(--ink-900)' }}>Sem fidelidade.</strong>{' '}
-                    Cancele quando quiser. 30 dias de garantia.
+                    É a chance a mais de fechar um lead quando você responde em até 5 min.{' '}
+                    <strong style={{ color: 'var(--ink-900)', whiteSpace: 'nowrap' }}>A IA faz isso 24h.</strong>{' '}
+                    <a href="https://25649.fs1.hubspotusercontent-na2.net/hub/25649/file-13535879-pdf/docs/mit_study.pdf"
+                       target="_blank" rel="noopener noreferrer" style={heroStyles.microSource}>Fonte: MIT</a>
                   </span>
                 </div>
               </div>
-            </Reveal>
           </div>
         </HeroHighlight>
 

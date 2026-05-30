@@ -1,14 +1,11 @@
 /* global React, ReactDOM, lucide,
-   Nav, Hero, LogoCloud, Section2, Problem, Flow, Calculator, Benefits, Proof, Offer, Guarantee, Objections, Faq, CtaFinal, Footer, Quiz,
+   Nav, Hero, Integrations, Diagnosis, Solution, Proof, Offer, Close, Footer, Quiz, FlowBackdrop,
    useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakColor, TweakToggle */
 const { useState, useEffect } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "accentColor": "#4DB6AC",
-  "density": "regular",
-  "showCalculator": true,
-  "showStoryboard": true,
-  "showProofStrip": true
+  "density": "regular"
 }/*EDITMODE-END*/;
 
 const ACCENT_PRESETS = {
@@ -55,6 +52,52 @@ function App() {
     if (window.lucide) window.lucide.createIcons();
   });
 
+  // Parallax engine — desloca [data-parallax] proporcional ao scroll (depth)
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let els = [];
+    let ticking = false;
+    const collect = () => { els = Array.from(document.querySelectorAll('[data-parallax]')); };
+    const apply = () => {
+      const vh = window.innerHeight;
+      for (const el of els) {
+        const speed = parseFloat(el.dataset.parallax) || 0;
+        const r = el.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) continue; // fora de vista
+        const offset = (r.top + r.height / 2 - vh / 2) / vh;
+        el.style.transform = `translate3d(0, ${(-offset * speed * 100).toFixed(2)}px, 0)`;
+      }
+      ticking = false;
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } };
+    const onResize = () => { collect(); onScroll(); };
+    collect(); apply();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    const t = setTimeout(() => { collect(); apply(); }, 500); // recoleta após mount completo
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      clearTimeout(t);
+    };
+  }, []);
+
+  // Lenis — smooth scroll (rolagem com peso)
+  useEffect(() => {
+    if (!window.Lenis) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const lenis = new window.Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    window.__lenis = lenis;
+    let raf;
+    const loop = (time) => { lenis.raf(time); raf = requestAnimationFrame(loop); };
+    raf = requestAnimationFrame(loop);
+    return () => { cancelAnimationFrame(raf); lenis.destroy(); window.__lenis = null; };
+  }, []);
+
   const openQuiz = () => setQuizOpen(true);
   const closeQuiz = () => setQuizOpen(false);
 
@@ -62,18 +105,18 @@ function App() {
     <>
       <Nav onCtaClick={openQuiz} />
       <Hero onCtaClick={openQuiz} />
-      <LogoCloud />
-      <Problem />
-      {t.showCalculator && <Calculator onCtaClick={openQuiz} />}
-      <Section2 />
-      {t.showStoryboard && <Flow />}
-      <Benefits />
-      {t.showProofStrip && <Proof />}
-      <Offer onCtaClick={openQuiz} />
-      <Guarantee />
-      <Objections />
-      <Faq />
-      <CtaFinal onCtaClick={openQuiz} />
+
+      {/* Canvas contínuo único — integra da seção 2 até o fim */}
+      <div className="page-flow">
+        <FlowBackdrop />
+        <Integrations />
+        <Diagnosis onCtaClick={openQuiz} />
+        <Solution />
+        <Proof />
+        <Offer onCtaClick={openQuiz} />
+        <Close onCtaClick={openQuiz} />
+      </div>
+
       <Footer />
 
       <Quiz open={quizOpen} onClose={closeQuiz} />
@@ -91,22 +134,6 @@ function App() {
           value={t.density}
           options={['compact', 'regular', 'comfy']}
           onChange={(v) => setTweak('density', v)}
-        />
-        <TweakSection label="Seções" />
-        <TweakToggle
-          label="Storyboard do fluxo"
-          value={t.showStoryboard}
-          onChange={(v) => setTweak('showStoryboard', v)}
-        />
-        <TweakToggle
-          label="Calculadora de no-show"
-          value={t.showCalculator}
-          onChange={(v) => setTweak('showCalculator', v)}
-        />
-        <TweakToggle
-          label="Prova social"
-          value={t.showProofStrip}
-          onChange={(v) => setTweak('showProofStrip', v)}
         />
       </TweaksPanel>
     </>

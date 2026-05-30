@@ -110,11 +110,11 @@ function Nav({ onCtaClick }) {
       top: 0, left: 0, right: 0,
       zIndex: 100,
       /* fade-in the glass layer */
-      background: scrolled ? 'rgba(255,255,255,0.82)' : 'rgba(255,255,255,0)',
-      backdropFilter: scrolled ? 'saturate(160%) blur(20px)' : 'none',
-      WebkitBackdropFilter: scrolled ? 'saturate(160%) blur(20px)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(15,46,74,0.07)' : '1px solid transparent',
-      boxShadow: scrolled ? '0 1px 0 rgba(255,255,255,0.6) inset, 0 4px 24px rgba(15,46,74,0.05)' : 'none',
+      background: scrolled ? 'rgba(250,247,241,0.72)' : 'rgba(250,247,241,0)',
+      backdropFilter: scrolled ? 'saturate(180%) blur(16px)' : 'none',
+      WebkitBackdropFilter: scrolled ? 'saturate(180%) blur(16px)' : 'none',
+      borderBottom: scrolled ? '1px solid var(--hairline-gold)' : '1px solid transparent',
+      boxShadow: scrolled ? '0 1px 0 rgba(255,255,255,0.6) inset, 0 6px 28px rgba(17,37,54,0.06)' : 'none',
       transition: 'background 280ms ease, backdrop-filter 280ms ease, border-color 280ms ease, box-shadow 280ms ease',
     }}>
       <div className="container-wide" style={{
@@ -174,6 +174,7 @@ function Nav({ onCtaClick }) {
           </button>
 
           {/* Primary CTA */}
+          <MagneticButton strength={0.3}>
           <button
             onClick={onCtaClick}
             style={{
@@ -205,6 +206,7 @@ function Nav({ onCtaClick }) {
             Fazer diagnóstico
             <Icon name="arrow-right" size={13} />
           </button>
+          </MagneticButton>
         </div>
       </div>
 

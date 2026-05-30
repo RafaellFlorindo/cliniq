@@ -4,11 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CLINIQ</title>
+  <link rel="icon" href="data:,">
 
-  <!-- ===== GOOGLE FONTS — Playfair Display (display) + Lora (body) ===== -->
+  <!-- ===== GOOGLE FONTS — Fraunces (display, serif editorial) + Hanken Grotesk (UI) ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- ===== DESIGN TOKENS + BASE + UTILITÁRIOS ===== -->
   <link rel="stylesheet" href="styles/tokens.css">
@@ -16,14 +17,15 @@
 </head>
 <body>
   <div id="app"></div>
+  <div class="grain" aria-hidden="true"></div>
 
   <!-- ===== VENDOR (ordem importa) ===== -->
   <script src="vendor/react.development.js"></script>
   <script src="vendor/react-dom.development.js"></script>
   <script src="vendor/babel.min.js"></script>
   <script src="vendor/lucide.min.js"></script>
-  <!-- Three.js — loaded as global window.THREE for DottedSurface hero background -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.min.js"></script>
+  <!-- Lenis — smooth scroll (UMD global window.Lenis) -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
 
   <!-- ===== COMPONENTES (ordem importa — cada arquivo lê window.* dos anteriores) ===== -->
 
@@ -33,20 +35,18 @@
   <!-- 2. Painel de tweaks de design (useTweaks, TweaksPanel, etc.) -->
   <script type="text/babel" src="components/TweaksPanel.jsx"></script>
 
-  <!-- 3. Seções da página — mesma ordem que o App as renderiza -->
+  <!-- 3. Canvas contínuo (FlowBackdrop / FlowEyebrow) — antes das seções que o usam -->
+  <script type="text/babel" src="components/PageCanvas.jsx"></script>
+
+  <!-- 4. Seções da página — mesma ordem que o App as renderiza -->
   <script type="text/babel" src="components/Nav.jsx"></script>
   <script type="text/babel" src="components/Hero.jsx"></script>
-  <script type="text/babel" src="components/Section2.jsx"></script>
-  <script type="text/babel" src="components/Problem.jsx"></script>
-  <script type="text/babel" src="components/Flow.jsx"></script>
-  <script type="text/babel" src="components/Calculator.jsx"></script>
-  <script type="text/babel" src="components/Benefits.jsx"></script>
+  <script type="text/babel" src="components/Integrations.jsx"></script>
+  <script type="text/babel" src="components/Diagnosis.jsx"></script>
+  <script type="text/babel" src="components/Solution.jsx"></script>
   <script type="text/babel" src="components/Proof.jsx"></script>
   <script type="text/babel" src="components/Offer.jsx"></script>
-  <script type="text/babel" src="components/Guarantee.jsx"></script>
-  <script type="text/babel" src="components/Objections.jsx"></script>
-  <script type="text/babel" src="components/Faq.jsx"></script>
-  <script type="text/babel" src="components/CtaFinal.jsx"></script>
+  <script type="text/babel" src="components/Close.jsx"></script>
   <script type="text/babel" src="components/Footer.jsx"></script>
   <script type="text/babel" src="components/Quiz.jsx"></script>
 
