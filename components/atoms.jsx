@@ -113,4 +113,124 @@ function SpotlightCard({ children, className, style, ...rest }) {
 
 const GlowCard = SpotlightCard;
 
-Object.assign(window, { Icon, Button, Badge, Container, Eyebrow, Reveal, GlowCard, SpotlightCard });
+/* ─── MagneticButton — o alvo "puxa" levemente o cursor ──────────────────── */
+function MagneticButton({ children, strength = 0.35, className = '', style = {}, ...props }) {
+  const ref = useRef(null);
+  const fine = typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia('(pointer: fine)').matches : true;
+  const onMove = (e) => {
+    if (!fine) return;
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - (r.left + r.width / 2);
+    const y = e.clientY - (r.top + r.height / 2);
+    el.style.transform = `translate(${(x * strength).toFixed(1)}px, ${(y * strength).toFixed(1)}px)`;
+  };
+  const reset = () => { const el = ref.current; if (el) el.style.transform = 'translate(0px, 0px)'; };
+  return (
+    <span
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={reset}
+      className={className}
+      style={{
+        display: 'inline-flex',
+        transition: 'transform 320ms cubic-bezier(0.34,1.56,0.64,1)',
+        willChange: 'transform',
+        ...style,
+      }}
+      {...props}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* ─── useCountUp — anima 0 → alvo quando entra na viewport ────────────────── */
+function useCountUp(target, options) {
+  const duration = (options && options.duration) || 1600;
+  const ref = useRef(null);
+  const [val, setVal] = React.useState(0);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setVal(target); return; }
+    let raf = null;
+    const io = new IntersectionObserver((entries) => {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setVal(target * eased);
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, { threshold: 0.45 });
+    io.observe(el);
+    return () => { io.disconnect(); if (raf) cancelAnimationFrame(raf); };
+  }, [target, duration]);
+  return [ref, val];
+}
+
+/* ─── CountUp — número que sobe (prefixo/sufixo/decimais opcionais) ───────── */
+function CountUp({ to, prefix = '', suffix = '', decimals = 0, duration = 1600, className = '', style = {} }) {
+  const [ref, val] = useCountUp(to, { duration });
+  const formatted = val.toLocaleString('pt-BR', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+  return <span ref={ref} className={className} style={style}>{prefix}{formatted}{suffix}</span>;
+}
+
+/* ─── SourceTag — procedência discreta de um dado ("Fonte: …") ───────────── */
+function SourceTag({ children, href, onNavy = false }) {
+  const cls = onNavy ? 'source-tag source-tag-navy' : 'source-tag';
+  const inner = <>Fonte: {children}</>;
+  if (href) {
+    return (
+      <a className={cls} href={href} target="_blank" rel="noopener noreferrer">{inner}</a>
+    );
+  }
+  return <span className={cls}>{inner}</span>;
+}
+
+/* ─── Stat — número grande com count-up + label + fonte citada ────────────── */
+function Stat({ to, prefix = '', suffix = '', decimals = 0, duration = 1500, label, source, sourceHref, onNavy = false, big = false }) {
+  return (
+    <div className={`stat${onNavy ? ' stat-navy' : ''}${big ? ' stat-big' : ''}`}>
+      <div className="stat-value tnum">
+        <CountUp to={to} prefix={prefix} suffix={suffix} decimals={decimals} duration={duration} />
+      </div>
+      {label && <div className="stat-label">{label}</div>}
+      {source && <SourceTag href={sourceHref} onNavy={onNavy}>{source}</SourceTag>}
+    </div>
+  );
+}
+
+/* ─── IllustrativeTag — selo honesto "Ilustrativo" ───────────────────────── */
+function IllustrativeTag({ style }) {
+  return <span className="illustrative" style={style}>Ilustrativo</span>;
+}
+
+/* ─── ImagePlaceholder — slot reservado com descrição da imagem ideal ─────── */
+function ImagePlaceholder({ label, hint, ratio = '16 / 10', round = false, style = {} }) {
+  return (
+    <div
+      className={`img-ph${round ? ' img-ph-round' : ''}`}
+      style={{ aspectRatio: round ? '1 / 1' : ratio, ...style }}
+      role="img"
+      aria-label={label}
+    >
+      <Icon name="image" size={round ? 18 : 26} strokeWidth={1.6} />
+      <span className="img-ph-label">{label}</span>
+      {hint && <span className="img-ph-hint">{hint}</span>}
+    </div>
+  );
+}
+
+Object.assign(window, {
+  Icon, Button, Badge, Container, Eyebrow, Reveal, GlowCard, SpotlightCard,
+  MagneticButton, useCountUp, CountUp,
+  SourceTag, Stat, IllustrativeTag, ImagePlaceholder,
+});
